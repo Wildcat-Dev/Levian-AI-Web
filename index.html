@@ -6,70 +6,28 @@
     <title>Levian AI</title>
     <style>
         /* ==========================================================================
-           1. CSS VARIABLES & THEMING
+           1. GLASS UI VARIABLES & THEMING
            ========================================================================== */
         :root {
-            /* Dark Theme (Default) */
-            --bg-main: #0d0e12;
-            --bg-sidebar: #13151c;
-            --bg-card: rgba(255, 255, 255, 0.04);
-            --bg-card-hover: rgba(255, 255, 255, 0.08);
-            --bg-card-active: rgba(255, 255, 255, 0.12);
-            --bg-input: #1a1d26;
-            --bg-modal: #161822;
-            --bg-code: #0b0c10;
-            
-            --text-primary: #f0f2f5;
-            --text-secondary: #9da3b4;
-            --text-muted: #62687a;
-            
-            --border-color: rgba(255, 255, 255, 0.08);
-            --border-highlight: rgba(255, 255, 255, 0.18);
-            
-            --accent-color: #3b82f6;
-            --accent-hover: #2563eb;
-            --accent-glow: rgba(59, 130, 246, 0.25);
-            
-            --user-msg-bg: #1e2638;
-            --user-msg-border: rgba(59, 130, 246, 0.2);
-            --ai-msg-bg: transparent;
-            
-            --radius-sm: 6px;
-            --radius-md: 10px;
-            --radius-lg: 16px;
-            --radius-full: 9999px;
-            
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-            --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
-            --transition-fast: 0.15s ease;
-            --transition-normal: 0.25s ease;
+            /* Dark Mode Defaults */
+            --bg-color: #121212;
+            --sidebar-bg: #1e1e1e;
+            --text-color: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-color: #3b82f6; /* Default Blue */
         }
 
         [data-theme="light"] {
-            /* Light Theme */
-            --bg-main: #f8fafc;
-            --bg-sidebar: #f1f5f9;
-            --bg-card: rgba(0, 0, 0, 0.03);
-            --bg-card-hover: rgba(0, 0, 0, 0.07);
-            --bg-card-active: rgba(0, 0, 0, 0.12);
-            --bg-input: #ffffff;
-            --bg-modal: #ffffff;
-            --bg-code: #1e293b;
-            
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            
-            --border-color: rgba(0, 0, 0, 0.08);
-            --border-highlight: rgba(0, 0, 0, 0.18);
-            
+            /* Light Mode Defaults */
+            --bg-color: #f9fafb;
+            --sidebar-bg: #ffffff;
+            --text-color: #1f2937;
+            --glass-bg: rgba(0, 0, 0, 0.05);
+            --glass-hover: rgba(0, 0, 0, 0.1);
+            --border-color: rgba(0, 0, 0, 0.1);
             --accent-color: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-glow: rgba(37, 99, 235, 0.15);
-            
-            --user-msg-bg: #e0e7ff;
-            --user-msg-border: rgba(37, 99, 235, 0.2);
-            --ai-msg-bg: transparent;
         }
 
         /* ==========================================================================
@@ -79,505 +37,244 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
             display: flex;
             height: 100vh;
-            width: 100vw;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             overflow: hidden;
-            transition: background-color var(--transition-normal), color var(--transition-normal);
-        }
-
-        /* Custom Scrollbars */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: var(--radius-full);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
         }
 
         /* ==========================================================================
            3. SIDEBAR STYLING
            ========================================================================== */
         #sidebar {
-            width: 280px;
+            width: 260px;
             height: 100%;
-            background-color: var(--bg-sidebar);
+            background: var(--sidebar-bg);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            z-index: 10;
-            transition: transform var(--transition-normal), background-color var(--transition-normal);
         }
 
         .sidebar-header {
-            padding: 18px 16px;
+            padding: 15px;
             border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .brand-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-primary);
-        }
-
-        .brand-badge {
-            font-size: 0.65rem;
-            background: var(--accent-glow);
-            color: var(--accent-color);
-            padding: 2px 6px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .btn-new-chat {
-            width: 100%;
-            padding: 10px 14px;
-            margin: 12px 0 4px 0;
-            background: var(--accent-color);
-            color: #ffffff;
-            border: none;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            font-size: 0.88rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background var(--transition-fast), transform var(--transition-fast);
-            box-shadow: 0 4px 12px var(--accent-glow);
-        }
-
-        .btn-new-chat:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
         }
 
         #chat-history {
             flex: 1;
             overflow-y: auto;
-            padding: 12px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
 
         .history-item {
-            padding: 10px 12px;
-            border-radius: var(--radius-md);
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            color: var(--text-color);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            transition: background var(--transition-fast), color var(--transition-fast);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            transition: background 0.2s;
             border: 1px solid transparent;
         }
 
         .history-item:hover {
-            background: var(--bg-card-hover);
-            color: var(--text-primary);
+            background: var(--glass-hover);
         }
 
         .history-item.active {
-            background: var(--bg-card-active);
-            color: var(--text-primary);
+            background: var(--glass-hover);
             border-color: var(--border-color);
-            font-weight: 500;
+            font-weight: bold;
         }
 
-        .history-item-title {
+        .history-title {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             flex: 1;
         }
 
-        .history-item-del {
-            opacity: 0;
+        .history-del-btn {
             background: none;
             border: none;
-            color: var(--text-muted);
+            color: #ff4444;
             cursor: pointer;
             font-size: 1rem;
-            padding: 2px 4px;
-            border-radius: var(--radius-sm);
-            transition: opacity var(--transition-fast), color var(--transition-fast);
+            opacity: 0.6;
+            padding: 0 4px;
         }
 
-        .history-item:hover .history-item-del {
+        .history-del-btn:hover {
             opacity: 1;
         }
 
-        .history-item-del:hover {
-            color: #ef4444;
-        }
-
         .sidebar-footer {
-            padding: 14px;
+            padding: 15px;
             border-top: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            background-color: var(--bg-sidebar);
+            gap: 10px;
         }
 
+        /* Glass Buttons */
         .glass-btn {
-            width: 100%;
-            background: var(--bg-card);
-            color: var(--text-primary);
+            background: var(--glass-bg);
+            color: var(--text-color);
             border: 1px solid var(--border-color);
-            padding: 9px 12px;
-            border-radius: var(--radius-md);
+            padding: 10px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 500;
+            transition: 0.2s;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            transition: background var(--transition-fast), border-color var(--transition-fast);
+            gap: 8px;
+            width: 100%;
         }
 
         .glass-btn:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-highlight);
+            background: var(--glass-hover);
         }
 
         .icon-img {
             width: 16px;
             height: 16px;
             object-fit: contain;
-            display: block;
         }
 
         /* ==========================================================================
-           4. MAIN CONTENT & STREAM AREA
+           4. MAIN CONTENT & STREAM
            ========================================================================== */
         #main-content {
             flex: 1;
-            height: 100%;
             display: flex;
             flex-direction: column;
             position: relative;
-            background-color: var(--bg-main);
-        }
-
-        #top-header {
-            padding: 12px 24px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: var(--bg-main);
-            z-index: 5;
-        }
-
-        .chat-title-display {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
+            height: 100%;
         }
 
         #stream {
             flex: 1;
             overflow-y: auto;
-            padding: 24px 20%;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            scroll-behavior: smooth;
+            gap: 15px;
         }
 
-        @media (max-width: 1024px) {
-            #stream {
-                padding: 20px 8%;
-            }
-        }
-
-        @media (max-width: 640px) {
-            #sidebar {
-                position: absolute;
-                left: -280px;
-            }
-            #sidebar.open {
-                transform: translateX(280px);
-            }
-            #stream {
-                padding: 16px;
-            }
-        }
-
-        /* ==========================================================================
-           5. MESSAGE BUBBLES & TYPOGRAPHY
-           ========================================================================== */
+        /* Messages */
         .message {
-            padding: 14px 18px;
-            border-radius: var(--radius-lg);
-            max-width: 88%;
-            line-height: 1.6;
+            padding: 12px 16px;
+            border-radius: 8px;
+            max-width: 80%;
+            line-height: 1.5;
             font-size: 0.95rem;
             word-break: break-word;
-            animation: fadeIn 0.2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .user-message {
-            background-color: var(--user-msg-bg);
-            border: 1px solid var(--user-msg-border);
+            background: var(--glass-hover);
             align-self: flex-end;
-            color: var(--text-primary);
-            border-bottom-right-radius: 4px;
+            border: 1px solid var(--border-color);
         }
 
         .ai-message {
-            background-color: var(--ai-msg-bg);
-            align-self: flex-start;
-            color: var(--text-primary);
-            width: 100%;
-            max-width: 100%;
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        /* Markdown Formatting inside AI Messages */
-        .ai-message p {
-            margin-bottom: 12px;
-        }
-        .ai-message p:last-child {
-            margin-bottom: 0;
-        }
-
-        .ai-message h1, .ai-message h2, .ai-message h3, .ai-message h4 {
-            margin: 16px 0 8px 0;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .ai-message ul, .ai-message ol {
-            margin: 8px 0 12px 24px;
-        }
-
-        .ai-message li {
-            margin-bottom: 4px;
-        }
-
-        .ai-message blockquote {
-            border-left: 3px solid var(--accent-color);
-            padding-left: 12px;
-            margin: 12px 0;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        /* Code Blocks */
-        .code-block-wrapper {
-            background-color: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            margin: 14px 0;
-            overflow: hidden;
-        }
-
-        .code-header {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border-color);
-            font-family: monospace;
-        }
-
-        .copy-btn {
             background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: var(--radius-sm);
-            transition: background var(--transition-fast);
+            align-self: flex-start;
+            max-width: 100%;
+            width: 100%;
         }
 
-        .copy-btn:hover {
-            background: var(--bg-card-hover);
-            color: var(--text-primary);
-        }
-
+        /* Code Blocks & Typography */
+        .ai-message p { margin-bottom: 8px; }
         .ai-message pre {
-            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 6px;
             overflow-x: auto;
-            font-family: "Fira Code", Monaco, Consolas, "Courier New", monospace;
-            font-size: 0.85rem;
-            line-height: 1.45;
-            color: #e2e8f0;
-        }
-
-        .inline-code {
-            background-color: var(--bg-card-active);
-            padding: 2px 6px;
-            border-radius: var(--radius-sm);
             font-family: monospace;
-            font-size: 0.88em;
-            color: var(--accent-color);
+            margin: 10px 0;
         }
 
-        /* Typing Cursor */
         .cursor {
             display: inline-block;
             width: 8px;
             height: 16px;
-            background-color: var(--accent-color);
-            animation: blink 0.8s infinite;
+            background-color: var(--text-color);
+            animation: blink 1s step-end infinite;
             vertical-align: middle;
-            margin-left: 4px;
-            border-radius: 1px;
+            margin-left: 2px;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+        @keyframes blink { 50% { opacity: 0; } }
 
         /* ==========================================================================
-           6. INPUT AREA STYLING
+           5. BOTTOM INPUT BAR
            ========================================================================== */
         #input-container {
-            padding: 16px 20%;
+            padding: 20px;
             border-top: 1px solid var(--border-color);
             display: flex;
             gap: 10px;
-            background-color: var(--bg-main);
+            background: var(--bg-color);
             align-items: flex-end;
-            position: relative;
-        }
-
-        @media (max-width: 1024px) {
-            #input-container {
-                padding: 14px 8%;
-            }
-        }
-
-        @media (max-width: 640px) {
-            #input-container {
-                padding: 12px;
-            }
-        }
-
-        .input-box-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 8px 12px;
-            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-        }
-
-        .input-box-wrapper:focus-within {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px var(--accent-glow);
         }
 
         textarea {
-            width: 100%;
-            background: transparent;
-            color: var(--text-primary);
-            border: none;
+            flex: 1;
+            background: var(--glass-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
             resize: none;
             outline: none;
-            min-height: 44px;
-            max-height: 160px;
+            min-height: 50px;
+            max-height: 150px;
             font-size: 0.95rem;
-            line-height: 1.4;
-            padding: 6px 0;
         }
 
-        .input-controls {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 6px;
-            border-top: 1px solid var(--border-color);
-            margin-top: 4px;
-        }
-
-        select#modelSelect {
-            background: var(--bg-card);
-            color: var(--text-secondary);
+        select {
+            background: var(--glass-bg);
+            color: var(--text-color);
             border: 1px solid var(--border-color);
-            padding: 4px 8px;
-            border-radius: var(--radius-sm);
+            padding: 12px;
+            border-radius: 8px;
             outline: none;
-            font-size: 0.78rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: background var(--transition-fast);
-        }
-
-        select#modelSelect:hover {
-            background: var(--bg-card-hover);
-            color: var(--text-primary);
         }
 
         .send-btn {
             background: var(--accent-color);
-            color: #ffffff;
+            color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius-md);
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: background var(--transition-fast), opacity var(--transition-fast);
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: opacity 0.2s, background-color 0.2s;
         }
 
         .send-btn:hover {
-            background: var(--accent-hover);
-        }
-
-        .send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+            opacity: 0.9;
         }
 
         /* ==========================================================================
-           7. SETTINGS MODAL STYLING
+           6. SETTINGS MODAL & 7 ACCENT COLORS
            ========================================================================== */
         .modal-overlay {
             position: fixed;
@@ -585,91 +282,62 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity var(--transition-normal);
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal-card {
-            background: var(--bg-modal);
+            background: var(--sidebar-bg);
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
+            border-radius: 12px;
             width: 90%;
-            max-width: 480px;
-            padding: 24px;
-            box-shadow: var(--shadow-lg);
+            max-width: 400px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            transform: translateY(10px);
-            transition: transform var(--transition-normal);
-        }
-
-        .modal-overlay.active .modal-card {
-            transform: translateY(0);
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-        }
-
-        .modal-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: color var(--transition-fast);
-        }
-
-        .close-btn:hover {
-            color: var(--text-primary);
-        }
-
-        .setting-row {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .setting-label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-secondary);
+            gap: 15px;
         }
 
         .setting-input {
-            background: var(--bg-input);
+            width: 100%;
+            background: var(--glass-bg);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
+            color: var(--text-color);
             padding: 8px 12px;
-            border-radius: var(--radius-md);
+            border-radius: 6px;
             outline: none;
-            font-size: 0.88rem;
+            margin-top: 5px;
         }
 
-        .setting-input:focus {
-            border-color: var(--accent-color);
+        /* 7 Color Palette Slots */
+        .color-palette {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .color-swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .color-swatch.active {
+            border-color: var(--text-color);
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -678,34 +346,21 @@
     <!-- SIDEBAR -->
     <div id="sidebar">
         <div class="sidebar-header">
-            <div class="brand-title">
-                Levian AI
-                <span class="brand-badge">PRO</span>
-            </div>
-        </div>
-
-        <div style="padding: 0 12px;">
-            <button class="btn-new-chat" onclick="startNewChat()">
-                <span>+</span> New Chat
-            </button>
+            <button class="glass-btn" onclick="startNewChat()">+ New Chat</button>
         </div>
 
         <div id="chat-history">
-            <!-- Dynamic chat history list -->
+            <!-- Dynamic chat history -->
         </div>
-
+        
         <div class="sidebar-footer">
             <!-- Theme Toggle Button -->
-            <button class="glass-btn" onclick="toggleTheme()">
-                <span id="theme-icon">🌗</span> Toggle Theme
-            </button>
+            <button class="glass-btn" onclick="toggleTheme()">🌗 Toggle Theme</button>
 
-            <!-- Export Chat Button -->
-            <button class="glass-btn" onclick="exportCurrentChat()">
-                📥 Export Current Chat
-            </button>
+            <!-- Export Chat Log -->
+            <button class="glass-btn" onclick="exportCurrentChat()">📥 Export Chat Log</button>
 
-            <!-- Settings Button with Custom Dynamic Image Icon -->
+            <!-- Settings Button -->
             <button class="glass-btn" onclick="openSettings()">
                 <img id="settings-icon" class="icon-img" src="settingsw.png" alt="Settings"> 
                 Settings
@@ -715,83 +370,80 @@
 
     <!-- MAIN CONTENT -->
     <div id="main-content">
-        <div id="top-header">
-            <span class="chat-title-display" id="headerChatTitle">New Conversation</span>
-        </div>
-
-        <!-- STREAM / CHAT AREA -->
         <div id="stream"></div>
-
-        <!-- INPUT CONTAINER -->
+        
         <div id="input-container">
-            <div class="input-box-wrapper">
-                <textarea id="userInput" placeholder="Message Levian AI..." onkeypress="handleEnter(event)" oninput="autoResizeTextarea(this)"></textarea>
-                
-                <div class="input-controls">
-                    <!-- Model selector (2.5 pro explicitly removed) -->
-                    <select id="modelSelect">
-                        <option value="gemini-3.1-flash-lite">3.1 flash-lite</option>
-                        <option value="gemini-3.5-flash" selected>3.5 flash</option>
-                    </select>
-
-                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
-                </div>
-            </div>
+            <!-- Renamed models: 1.5 Sparx & 2.1 Lightning -->
+            <select id="modelSelect">
+                <option value="gemini-3.1-flash-lite">1.5 Sparx</option>
+                <option value="gemini-3.5-flash" selected>2.1 Lightning</option>
+            </select>
+            
+            <textarea id="userInput" placeholder="Message Levian AI..." onkeypress="handleEnter(event)"></textarea>
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
         </div>
     </div>
 
     <!-- SETTINGS MODAL -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
-            <div class="modal-header">
-                <span class="modal-title">Settings</span>
-                <button class="close-btn" onclick="closeSettings()">&times;</button>
+            <h3 style="margin-bottom: 5px;">Settings</h3>
+            
+            <!-- 7 Accent Color Themes -->
+            <div>
+                <label style="font-size: 0.85rem;">Accent Color Theme</label>
+                <div class="color-palette" id="colorPalette">
+                    <div class="color-swatch" style="background: #3b82f6;" onclick="selectAccentColor('#3b82f6', this)"></div>
+                    <div class="color-swatch" style="background: #8b5cf6;" onclick="selectAccentColor('#8b5cf6', this)"></div>
+                    <div class="color-swatch" style="background: #ec4899;" onclick="selectAccentColor('#ec4899', this)"></div>
+                    <div class="color-swatch" style="background: #ef4444;" onclick="selectAccentColor('#ef4444', this)"></div>
+                    <div class="color-swatch" style="background: #f97316;" onclick="selectAccentColor('#f97316', this)"></div>
+                    <div class="color-swatch" style="background: #10b981;" onclick="selectAccentColor('#10b981', this)"></div>
+                    <div class="color-swatch" style="background: #06b6d4;" onclick="selectAccentColor('#06b6d4', this)"></div>
+                </div>
+            </div>
+
+            <div>
+                <label style="font-size: 0.85rem;">System Instruction</label>
+                <input type="text" id="sysPromptInput" class="setting-input" placeholder="e.g. You are a helpful assistant...">
             </div>
             
-            <div class="setting-row">
-                <label class="setting-label">System Instruction Override</label>
-                <input type="text" id="sysPromptInput" class="setting-input" placeholder="e.g. You are a helpful technical assistant...">
-            </div>
-
-            <div class="setting-row">
-                <label class="setting-label">Worker Endpoint URL</label>
+            <div>
+                <label style="font-size: 0.85rem;">Worker URL</label>
                 <input type="text" id="workerUrlInput" class="setting-input" value="https://levianai.qzz.io/levian">
             </div>
-
-            <button class="glass-btn" style="background: var(--accent-color); color: white; border: none; margin-top: 8px;" onclick="saveSettings()">
-                Save & Close
-            </button>
+            
+            <button class="glass-btn" style="background: var(--accent-color); color: white; border: none;" onclick="saveSettings()">Save & Close</button>
         </div>
     </div>
 
     <!-- APPLICATION SCRIPT -->
     <script>
-        /* ==========================================================================
-           STATE & GLOBAL VARIABLES
-           ========================================================================== */
         let workerUrl = "https://levianai.qzz.io/levian";
         let systemPrompt = "";
+        let currentAccentColor = "#3b82f6";
         
         const stream = document.getElementById("stream");
         const userInput = document.getElementById("userInput");
         const sendBtn = document.getElementById("sendBtn");
         const historyContainer = document.getElementById("chat-history");
-        const headerChatTitle = document.getElementById("headerChatTitle");
 
-        let chats = {}; // Structure: { chatId: { title: "...", messages: [...] } }
+        let chats = {}; 
         let currentChatId = null;
         let isFirstMessage = true;
 
-        /* ==========================================================================
-           1. INITIALIZATION & STORAGE
-           ========================================================================== */
+        /* --- 1. INITIALIZATION & STORAGE --- */
         function init() {
-            // Load theme
+            // Theme setup
             const savedTheme = localStorage.getItem("levian_theme") || "dark";
             document.body.setAttribute("data-theme", savedTheme);
             updateSettingsIcon(savedTheme === "dark");
 
-            // Load saved settings
+            // Accent color setup
+            const savedColor = localStorage.getItem("levian_accent_color") || "#3b82f6";
+            setAccentColor(savedColor);
+
+            // Worker & System Instruction
             const savedWorker = localStorage.getItem("levian_worker_url");
             if (savedWorker) {
                 workerUrl = savedWorker;
@@ -800,19 +452,13 @@
             systemPrompt = localStorage.getItem("levian_sys_prompt") || "";
             document.getElementById("sysPromptInput").value = systemPrompt;
 
-            // Load chats from LocalStorage
             const storedChats = localStorage.getItem("levian_chats");
             if (storedChats) {
-                try {
-                    chats = JSON.parse(storedChats);
-                } catch(e) {
-                    chats = {};
-                }
+                try { chats = JSON.parse(storedChats); } catch(e) { chats = {}; }
             }
 
             renderSidebarHistory();
 
-            // Start new chat if no history exists
             const chatIds = Object.keys(chats);
             if (chatIds.length > 0) {
                 loadChat(chatIds[chatIds.length - 1]);
@@ -825,9 +471,21 @@
             localStorage.setItem("levian_chats", JSON.stringify(chats));
         }
 
-        /* ==========================================================================
-           2. THEME & SETTINGS LOGIC
-           ========================================================================== */
+        /* --- 2. ACCENT COLOR & THEME LOGIC --- */
+        function selectAccentColor(hexColor, swatchEl) {
+            currentAccentColor = hexColor;
+            setAccentColor(hexColor);
+            
+            const swatches = document.querySelectorAll(".color-swatch");
+            swatches.forEach(s => s.classList.remove("active"));
+            if (swatchEl) swatchEl.classList.add("active");
+        }
+
+        function setAccentColor(hexColor) {
+            currentAccentColor = hexColor;
+            document.documentElement.style.setProperty("--accent-color", hexColor);
+        }
+
         function toggleTheme() {
             const currentTheme = document.body.getAttribute("data-theme");
             const newTheme = currentTheme === "dark" ? "light" : "dark";
@@ -846,11 +504,16 @@
         }
 
         function openSettings() {
+            // Highlight active colorSwatch
+            const swatches = document.querySelectorAll(".color-swatch");
+            swatches.forEach(s => {
+                if (s.style.backgroundColor === currentAccentColor || s.style.background === currentAccentColor) {
+                    s.classList.add("active");
+                } else {
+                    s.classList.remove("active");
+                }
+            });
             document.getElementById("settingsModal").classList.add("active");
-        }
-
-        function closeSettings() {
-            document.getElementById("settingsModal").classList.remove("active");
         }
 
         function saveSettings() {
@@ -859,21 +522,17 @@
             
             localStorage.setItem("levian_worker_url", workerUrl);
             localStorage.setItem("levian_sys_prompt", systemPrompt);
-            closeSettings();
+            localStorage.setItem("levian_accent_color", currentAccentColor);
+            
+            document.getElementById("settingsModal").classList.remove("active");
         }
 
-        /* ==========================================================================
-           3. CHAT MANAGEMENT & HISTORY
-           ========================================================================== */
+        /* --- 3. CHAT MANAGEMENT --- */
         function startNewChat() {
             currentChatId = "chat_" + Date.now();
-            chats[currentChatId] = {
-                title: "New Conversation",
-                messages: []
-            };
+            chats[currentChatId] = { title: "New Chat", messages: [] };
             isFirstMessage = true;
             stream.innerHTML = "";
-            headerChatTitle.innerText = "New Conversation";
             saveState();
             renderSidebarHistory();
         }
@@ -882,11 +541,10 @@
             if (!chats[chatId]) return;
             currentChatId = chatId;
             isFirstMessage = chats[chatId].messages.length === 0;
-            headerChatTitle.innerText = chats[chatId].title;
             stream.innerHTML = "";
 
             chats[chatId].messages.forEach(msg => {
-                const bubble = appendMessageBubble(msg.text, msg.role === "user" ? "user-message" : "ai-message");
+                const bubble = appendMessage(msg.text, msg.role === "user" ? "user-message" : "ai-message");
                 if (msg.role === "model") {
                     bubble.innerHTML = parseMarkdown(msg.text);
                 }
@@ -900,7 +558,6 @@
             e.stopPropagation();
             delete chats[chatId];
             saveState();
-            
             const remaining = Object.keys(chats);
             if (remaining.length > 0) {
                 loadChat(remaining[remaining.length - 1]);
@@ -920,11 +577,11 @@
                 item.onclick = () => loadChat(id);
 
                 const titleSpan = document.createElement("span");
-                titleSpan.className = "history-item-title";
-                titleSpan.innerText = "💬 " + (chat.title || "New Conversation");
+                titleSpan.className = "history-title";
+                titleSpan.innerText = "💬 " + (chat.title || "New Chat");
 
                 const delBtn = document.createElement("button");
-                delBtn.className = "history-item-del";
+                delBtn.className = "history-del-btn";
                 delBtn.innerHTML = "&times;";
                 delBtn.onclick = (e) => deleteChat(e, id);
 
@@ -946,19 +603,12 @@
             URL.revokeObjectURL(url);
         }
 
-        /* ==========================================================================
-           4. MESSAGING & API INTEGRATION
-           ========================================================================== */
+        /* --- 4. MESSAGING & API --- */
         function handleEnter(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
             }
-        }
-
-        function autoResizeTextarea(el) {
-            el.style.height = 'auto';
-            el.style.height = (el.scrollHeight) + 'px';
         }
 
         async function sendMessage() {
@@ -967,28 +617,22 @@
 
             const selectedModel = document.getElementById("modelSelect").value;
 
-            // UI Adjustments
-            appendMessageBubble(text, "user-message");
+            appendMessage(text, "user-message");
             userInput.value = "";
-            userInput.style.height = "auto";
-            
-            // Save user message to state
+
             chats[currentChatId].messages.push({ role: "user", text: text });
             saveState();
 
-            // Handle title generation on first turn
             if (isFirstMessage) {
                 generateSidebarTitle(text, selectedModel);
                 isFirstMessage = false;
             }
 
-            // Construct contents for Gemini API format
             let apiContents = chats[currentChatId].messages.map(m => ({
                 role: m.role,
                 parts: [{ text: m.text }]
             }));
 
-            // Include system instruction if set
             if (systemPrompt) {
                 apiContents.unshift({
                     role: "user",
@@ -996,13 +640,10 @@
                 });
             }
 
-            // Create AI response bubble placeholder with blinking cursor
-            const aiBubble = appendMessageBubble("", "ai-message");
+            const aiBubble = appendMessage("", "ai-message");
             const cursorBlock = document.createElement("span");
             cursorBlock.className = "cursor";
             aiBubble.appendChild(cursorBlock);
-
-            sendBtn.disabled = true;
 
             try {
                 const response = await fetch(`${workerUrl}?model=${selectedModel}`, {
@@ -1011,30 +652,23 @@
                     body: JSON.stringify({ contents: apiContents })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`Server returned HTTP ${response.status}`);
-                }
-
                 const data = await response.json();
                 const aiText = data.candidates[0].content.parts[0].text;
 
-                // Save AI response to chat history
                 chats[currentChatId].messages.push({ role: "model", text: aiText });
                 saveState();
 
-                // Trigger smooth typing output animation
-                typeText(aiBubble, cursorBlock, aiText, 12);
+                // Typing effect with smooth scroll
+                typeText(aiBubble, cursorBlock, aiText, 15);
 
             } catch (err) {
                 console.error(err);
-                aiBubble.innerText = "Error: Unable to process request. Please check worker endpoint.";
+                aiBubble.innerText = "Error connecting to AI. Please try again.";
                 if (cursorBlock) cursorBlock.remove();
-            } finally {
-                sendBtn.disabled = false;
             }
         }
 
-        function appendMessageBubble(text, className) {
+        function appendMessage(text, className) {
             const div = document.createElement("div");
             div.className = `message ${className}`;
             div.innerText = text;
@@ -1043,18 +677,14 @@
             return div;
         }
 
-        /* ==========================================================================
-           5. TYPING EFFECT & EXACT SMOOTH SCROLL LOGIC
-           ========================================================================== */
+        /* --- 5. SMOOTH SCROLL & TYPING LOOP --- */
         function typeText(element, cursorBlock, fullRawText, speed) {
             let i = 0;
             const printClock = setInterval(() => {
-                // Periodically update innerHTML with rendered Markdown
                 element.innerHTML = parseMarkdown(fullRawText.slice(0, i + 1));
                 if (cursorBlock) element.appendChild(cursorBlock);
                 i++;
 
-                // EXACT USER SNIPPET: Smooth Scrolling Adjustment
                 const userDistanceFromBottom = stream.scrollHeight - stream.scrollTop - stream.clientHeight;
                 if (userDistanceFromBottom < 280) {
                     stream.scrollTop = stream.scrollHeight;
@@ -1063,16 +693,13 @@
                 if (i >= fullRawText.length) {
                     clearInterval(printClock);
                     if (cursorBlock) cursorBlock.remove();
-                    element.innerHTML = parseMarkdown(fullRawText); // Final complete render
+                    element.innerHTML = parseMarkdown(fullRawText);
                 }
             }, speed);
         }
 
-        /* ==========================================================================
-           6. BACKGROUND TITLE GENERATION
-           ========================================================================== */
+        /* --- 6. BACKGROUND TITLE GENERATION --- */
         async function generateSidebarTitle(firstUserMessage, model) {
-            // Strict prompt requesting ONLY short-term title
             const titlePrompt = `User message: "${firstUserMessage}"\n\nWhat should be the name of this conversation in short term title don't say anything else except the title`;
 
             try {
@@ -1086,75 +713,30 @@
 
                 const data = await response.json();
                 let generatedTitle = data.candidates[0].content.parts[0].text;
-
-                // Clean up quotes and newlines
                 generatedTitle = generatedTitle.replace(/^["']|["']$/g, '').replace(/\n/g, ' ').trim();
 
-                // Update current chat title
                 if (chats[currentChatId]) {
                     chats[currentChatId].title = generatedTitle;
-                    headerChatTitle.innerText = generatedTitle;
                     saveState();
                     renderSidebarHistory();
                 }
-
             } catch (error) {
                 console.error("Failed to generate title:", error);
             }
         }
 
-        /* ==========================================================================
-           7. LIGHTWEIGHT MARKDOWN PARSER
-           ========================================================================== */
+        /* --- 7. BASIC MARKDOWN PARSER --- */
         function parseMarkdown(text) {
             if (!text) return "";
-
-            // Code Blocks ```lang ... ```
-            text = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(match, lang, code) {
-                const safeCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                return `<div class="code-block-wrapper">
-                    <div class="code-header">
-                        <span>${lang || 'code'}</span>
-                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code>${safeCode}</code></pre>
-                </div>`;
-            });
-
-            // Inline Code `code`
-            text = text.replace(/`([^`]+)`/g, '<span class="inline-code">$1</span>');
-
-            // Bold **text**
+            text = text.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+            text = text.replace(/`([^`]+)`/g, '<code style="background:var(--glass-hover); padding:2px 4px; border-radius:4px;">$1</code>');
             text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-
-            // Italic *text*
             text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-
-            // Headers # ## ###
-            text = text.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-            text = text.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-            text = text.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-
-            // Bullet Lists
-            text = text.replace(/^\s*-\s+(.*$)/gim, '<ul><li>$1</li></ul>');
-            text = text.replace(/<\/ul>\n<ul>/g, ''); // Join contiguous list items
-
-            // Line Breaks
             text = text.replace(/\n/g, '<br>');
-
             return text;
         }
 
-        function copyCode(btn) {
-            const pre = btn.parentElement.nextElementSibling;
-            navigator.clipboard.writeText(pre.innerText).then(() => {
-                btn.innerText = "Copied!";
-                setTimeout(() => btn.innerText = "Copy", 2000);
-            });
-        }
-
-        // Initialize on DOM Ready
-        window.onload = init;
+        init();
     </script>
 </body>
 </html>
