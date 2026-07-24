@@ -2,708 +2,640 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Levian AI</title>
+    <link rel="icon" type="image/png" href="LEVIANICON.png">
+    
     <style>
-        /* ==========================================================================
-           1. GLASS UI VARIABLES & THEMING
-           ========================================================================== */
+        @font-face {
+            font-family: 'Anurati';
+            src: url('Anurati-Regular.otf') format('opentype');
+        }
+
+        /* Enforce uppercase for all Anurati styled text */
+        .anurati-font, .brand-name, #beta-text {
+            font-family: 'Anurati', sans-serif !important;
+            text-transform: uppercase !important;
+        }
+
+        /* --- THEME VARIABLES --- */
         :root {
-            /* Dark Mode Defaults */
-            --bg-color: #121212;
-            --sidebar-bg: #1e1e1e;
-            --text-color: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-hover: rgba(255, 255, 255, 0.1);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --accent-color: #3b82f6; /* Default Blue */
+            --bg-color: #050505;
+            --glass-bg: rgba(20, 20, 20, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-hover: rgba(255, 255, 255, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent: #00f3ff;
+            --user-bubble: rgba(255, 255, 255, 0.05);
+            --sidebar-width: 270px;
         }
 
+        /* Light Theme */
         [data-theme="light"] {
-            /* Light Mode Defaults */
-            --bg-color: #f9fafb;
-            --sidebar-bg: #ffffff;
-            --text-color: #1f2937;
-            --glass-bg: rgba(0, 0, 0, 0.05);
-            --glass-hover: rgba(0, 0, 0, 0.1);
-            --border-color: rgba(0, 0, 0, 0.1);
-            --accent-color: #2563eb;
+            --bg-color: #f0f2f5;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(0, 0, 0, 0.12);
+            --glass-hover: rgba(0, 0, 0, 0.06);
+            --text-main: #111111;
+            --text-muted: #555555;
+            --accent: #0078ff;
+            --user-bubble: rgba(0, 0, 0, 0.05);
         }
 
-        /* ==========================================================================
-           2. BASE RESETS & LAYOUT
-           ========================================================================== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        /* Midnight Blue Theme */
+        [data-theme="blue"] {
+            --bg-color: #020617;
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(56, 189, 248, 0.2);
+            --glass-hover: rgba(56, 189, 248, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --user-bubble: rgba(56, 189, 248, 0.1);
         }
 
-        body {
-            display: flex;
-            height: 100vh;
+        /* Cyberpunk Neon */
+        [data-theme="cyberpunk"] {
+            --bg-color: #0d021a;
+            --glass-bg: rgba(25, 10, 45, 0.6);
+            --glass-border: rgba(255, 0, 127, 0.25);
+            --glass-hover: rgba(255, 0, 127, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #b8860b;
+            --accent: #ff007f;
+            --user-bubble: rgba(255, 0, 127, 0.15);
+        }
+
+        /* Matrix Green */
+        [data-theme="matrix"] {
+            --bg-color: #020d04;
+            --glass-bg: rgba(4, 25, 8, 0.6);
+            --glass-border: rgba(0, 255, 102, 0.2);
+            --glass-hover: rgba(0, 255, 102, 0.12);
+            --text-main: #e0ffe8;
+            --text-muted: #4e8056;
+            --accent: #00ff66;
+            --user-bubble: rgba(0, 255, 102, 0.1);
+        }
+
+        /* Sunset Amber */
+        [data-theme="sunset"] {
+            --bg-color: #120a05;
+            --glass-bg: rgba(30, 15, 8, 0.6);
+            --glass-border: rgba(255, 153, 0, 0.25);
+            --glass-hover: rgba(255, 153, 0, 0.12);
+            --text-main: #fff5eb;
+            --text-muted: #a37f63;
+            --accent: #ff9900;
+            --user-bubble: rgba(255, 153, 0, 0.1);
+        }
+
+        /* Pure OLED Black */
+        [data-theme="oled"] {
+            --bg-color: #000000;
+            --glass-bg: rgba(10, 10, 10, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-hover: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #777777;
+            --accent: #ffffff;
+            --user-bubble: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            width: 100%; height: 100%;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, sans-serif;
             overflow: hidden;
+            display: flex;
+            transition: background-color 0.4s ease;
         }
 
-        /* ==========================================================================
-           3. SIDEBAR STYLING
-           ========================================================================== */
+        /* --- GLASSMORPHISM UTILS --- */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* --- SIDEBAR --- */
         #sidebar {
-            width: 260px;
+            width: var(--sidebar-width);
             height: 100%;
-            background: var(--sidebar-bg);
-            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
+            border-right: 1px solid var(--glass-border);
+            z-index: 20;
+            padding: 20px 15px;
+            gap: 15px;
+            transition: all 0.3s ease;
         }
 
         .sidebar-header {
-            padding: 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        #chat-history {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .history-item {
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.88rem;
-            color: var(--text-color);
-            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            transition: background 0.2s;
-            border: 1px solid transparent;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
         }
 
-        .history-item:hover {
-            background: var(--glass-hover);
-        }
-
-        .history-item.active {
-            background: var(--glass-hover);
-            border-color: var(--border-color);
-            font-weight: bold;
-        }
-
-        .history-title {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex: 1;
-        }
-
-        .history-del-btn {
-            background: none;
-            border: none;
-            color: #ff4444;
-            cursor: pointer;
-            font-size: 1rem;
-            opacity: 0.6;
-            padding: 0 4px;
-        }
-
-        .history-del-btn:hover {
-            opacity: 1;
-        }
-
-        .sidebar-footer {
-            padding: 15px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        /* Glass Buttons */
-        .glass-btn {
-            background: var(--glass-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-        }
-
-        .glass-btn:hover {
-            background: var(--glass-hover);
-        }
-
-        .icon-img {
-            width: 16px;
-            height: 16px;
+        #top-left-logo {
+            width: 32px;
+            height: 32px;
             object-fit: contain;
-        }
-
-        /* ==========================================================================
-           4. MAIN CONTENT & STREAM
-           ========================================================================== */
-        #main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            height: 100%;
-        }
-
-        #stream {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        /* Messages */
-        .message {
-            padding: 12px 16px;
-            border-radius: 8px;
-            max-width: 80%;
-            line-height: 1.5;
-            font-size: 0.95rem;
-            word-break: break-word;
-        }
-
-        .user-message {
-            background: var(--glass-hover);
-            align-self: flex-end;
-            border: 1px solid var(--border-color);
-        }
-
-        .ai-message {
-            background: transparent;
-            align-self: flex-start;
-            max-width: 100%;
-            width: 100%;
-        }
-
-        /* Code Blocks & Typography */
-        .ai-message p { margin-bottom: 8px; }
-        .ai-message pre {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: monospace;
-            margin: 10px 0;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 16px;
-            background-color: var(--text-color);
-            animation: blink 1s step-end infinite;
-            vertical-align: middle;
-            margin-left: 2px;
-        }
-
-        @keyframes blink { 50% { opacity: 0; } }
-
-        /* ==========================================================================
-           5. BOTTOM INPUT BAR
-           ========================================================================== */
-        #input-container {
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 10px;
-            background: var(--bg-color);
-            align-items: flex-end;
-        }
-
-        textarea {
-            flex: 1;
-            background: var(--glass-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            resize: none;
-            outline: none;
-            min-height: 50px;
-            max-height: 150px;
-            font-size: 0.95rem;
-        }
-
-        select {
-            background: var(--glass-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            border-radius: 8px;
-            outline: none;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .send-btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
-            transition: opacity 0.2s, background-color 0.2s;
-        }
-
-        .send-btn:hover {
             opacity: 0.9;
         }
 
-        /* ==========================================================================
-           6. SETTINGS MODAL & 7 ACCENT COLORS
-           ========================================================================== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            display: none;
+        .brand-name {
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+
+        /* Buttons */
+        .glass-btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--glass-border);
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 100;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .glass-btn:hover {
+            background: var(--glass-hover);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .primary-btn { background: var(--glass-hover); border-color: var(--glass-border); }
+
+        /* Discord-Style Animated Settings Button */
+        .settings-btn {
+            justify-content: flex-start;
+            gap: 12px;
+        }
+        .settings-icon-wrapper {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .settings-icon {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .glass-btn.settings-btn:hover .settings-icon {
+            transform: rotate(90deg);
         }
 
-        .modal-overlay.active { display: flex; }
-
-        .modal-card {
-            background: var(--sidebar-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
+        /* Chat History List */
+        #history-list {
+            flex-grow: 1;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-        }
-
-        .setting-input {
-            width: 100%;
-            background: var(--glass-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 8px 12px;
-            border-radius: 6px;
-            outline: none;
-            margin-top: 5px;
-        }
-
-        /* 7 Color Palette Slots */
-        .color-palette {
-            display: flex;
             gap: 8px;
-            margin-top: 8px;
         }
+        #history-list::-webkit-scrollbar { width: 4px; }
+        #history-list::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
 
-        .color-swatch {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
+        .history-item {
+            padding: 12px;
+            border-radius: 8px;
             cursor: pointer;
-            border: 2px solid transparent;
-            transition: transform 0.2s, border-color 0.2s;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            overflow: hidden;
+        }
+        .history-item span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 80%;
+        }
+        .history-item:hover { background: var(--glass-hover); color: var(--text-main); }
+        .history-item.active {
+            background: var(--glass-hover);
+            color: var(--text-main);
+            border: 1px solid var(--accent);
         }
 
-        .color-swatch:hover {
-            transform: scale(1.1);
+        .delete-btn {
+            background: none; border: none; color: #ff4444; cursor: pointer;
+            opacity: 0; transition: 0.2s; font-size: 15px;
+        }
+        .history-item:hover .delete-btn { opacity: 1; }
+        .delete-btn:hover { transform: scale(1.2); }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .color-swatch.active {
-            border-color: var(--text-color);
-            transform: scale(1.1);
+        /* --- MAIN CHAT AREA --- */
+        #main-content {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Landing Sequence */
+        #landing-ui {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 5;
+            pointer-events: none;
+        }
+        #beta-text {
+            font-size: 14px; letter-spacing: 5px; color: var(--accent);
+            opacity: 0.8; margin-bottom: 20px;
+        }
+        #hero-logo-center {
+            width: 200px; height: 200px; object-fit: contain; margin-bottom: 20px;
+        }
+        #hero-text {
+            font-size: 24px; font-weight: 300; letter-spacing: 1px; color: var(--text-muted);
+        }
+        body.chat-active #landing-ui {
+            opacity: 0; transform: scale(0.95) translateY(-20px); pointer-events: none;
+        }
+
+        /* Chat Stream */
+        #chat-stream {
+            flex-grow: 1;
+            padding: 40px 10%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            padding-bottom: 150px;
+        }
+        body.chat-active #chat-stream { opacity: 1; }
+
+        .msg-wrapper { display: flex; width: 100%; gap: 15px; align-items: flex-start; }
+        .msg-wrapper.user-wrapper { justify-content: flex-end; }
+
+        .ai-avatar {
+            width: 35px; height: 35px; object-fit: contain; flex-shrink: 0;
+        }
+        .ai-avatar.thinking { animation: spin 2s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .msg {
+            max-width: 75%; line-height: 1.6; font-size: 15px; padding: 14px 20px; 
+            border-radius: 12px; word-wrap: break-word;
+        }
+        .msg.user {
+            background: var(--user-bubble); border: 1px solid var(--glass-border);
+            border-bottom-right-radius: 4px;
+        }
+        .msg.ai {
+            background: transparent; color: var(--text-main); padding-left: 5px;
+        }
+
+        .typing-cursor {
+            font-weight: bold; color: var(--accent); animation: blink 0.4s steps(2, start) infinite;
+        }
+        @keyframes blink { to { visibility: hidden; } }
+
+        /* --- INPUT BAR --- */
+        #input-container {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 80%; max-width: 800px;
+            border-radius: 20px; padding: 10px 15px;
+            display: flex; align-items: flex-end; gap: 10px; cursor: text;
+            z-index: 100; transition: all 0.3s ease;
+        }
+        #input-container:focus-within { border-color: var(--accent); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+
+        textarea {
+            flex-grow: 1; background: transparent; border: none; outline: none;
+            color: var(--text-main); font-family: inherit; font-size: 15px;
+            resize: none; min-height: 24px; max-height: 120px; padding: 8px 0; overflow-y: auto;
+        }
+        textarea::placeholder { color: var(--text-muted); font-family: monospace; letter-spacing: 1px; }
+
+        .controls { display: flex; align-items: center; gap: 10px; padding-bottom: 4px; }
+        select {
+            background: var(--glass-hover); color: var(--text-muted);
+            border: 1px solid var(--glass-border); border-radius: 8px;
+            padding: 6px; font-size: 12px; cursor: pointer; outline: none; -webkit-appearance: none;
+        }
+
+        .send-btn {
+            background: transparent; border: none; color: var(--text-muted); cursor: pointer;
+            padding: 5px; transition: 0.3s;
+        }
+        .send-btn svg { width: 24px; height: 24px; fill: currentColor; }
+        .send-btn:hover { color: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
+
+        /* --- SETTINGS PANEL / MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            z-index: 200; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .settings-card {
+            width: 90%; max-width: 480px; padding: 25px; border-radius: 16px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+        .settings-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--glass-border); padding-bottom: 12px;
+        }
+        .settings-title { font-size: 18px; font-weight: 600; }
+        .close-modal { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+        .close-modal:hover { color: var(--text-main); }
+
+        .settings-section { display: flex; flex-direction: column; gap: 10px; }
+        .settings-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+        /* Themes Slot Grid */
+        .themes-slot-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;
+        }
+        .theme-card-option {
+            padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);
+            background: var(--glass-hover); cursor: pointer; display: flex; align-items: center;
+            gap: 10px; transition: 0.2s; font-size: 12px;
+        }
+        .theme-card-option:hover, .theme-card-option.active {
+            border-color: var(--accent); color: var(--accent);
+        }
+        .theme-card-preview {
+            width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) { 
+            #sidebar { position: absolute; transform: translateX(-100%); }
+            #sidebar.open { transform: translateX(0); }
+            #input-container { width: 92%; }
         }
     </style>
 </head>
-<body data-theme="dark">
+<body>
 
-    <!-- SIDEBAR -->
-    <div id="sidebar">
+    <!-- Sidebar / Navigation -->
+    <aside id="sidebar" class="glass">
         <div class="sidebar-header">
-            <button class="glass-btn" onclick="startNewChat()">+ New Chat</button>
-        </div>
-
-        <div id="chat-history">
-            <!-- Dynamic chat history -->
+            <img src="LEVIANICON.png" id="top-left-logo" alt="Logo">
+            <span class="brand-name">LEVIAN</span>
         </div>
         
+        <button class="glass-btn primary-btn" onclick="startNewChat()">+ New Chat</button>
+        
+        <div id="history-list">
+            <!-- Dynamic Chat History -->
+        </div>
+
         <div class="sidebar-footer">
-            <!-- Theme Toggle Button -->
-            <button class="glass-btn" onclick="toggleTheme()">🌗 Toggle Theme</button>
-
-            <!-- Export Chat Log -->
-            <button class="glass-btn" onclick="exportCurrentChat()">📥 Export Chat Log</button>
-
-            <!-- Settings Button -->
-            <button class="glass-btn" onclick="openSettings()">
-                <img id="settings-icon" class="icon-img" src="settingsw.png" alt="Settings"> 
+            <button class="glass-btn settings-btn" onclick="openSettings()">
+                <div class="settings-icon-wrapper">
+                    <img id="settings-img" src="settingsw.png" class="settings-icon" alt="Settings">
+                </div>
                 Settings
             </button>
+            <button class="glass-btn" onclick="exportCurrentChat()">📥 Export Chat Log</button>
         </div>
-    </div>
+    </aside>
 
-    <!-- MAIN CONTENT -->
-    <div id="main-content">
-        <div id="stream"></div>
+    <!-- Main Workspace -->
+    <main id="main-content">
         
-        <div id="input-container">
-            <!-- Renamed models: 1.5 Sparx & 2.1 Lightning -->
-            <select id="modelSelect">
-                <option value="gemini-3.1-flash-lite">1.5 Sparx</option>
-                <option value="gemini-3.5-flash" selected>2.1 Lightning</option>
-            </select>
-            
-            <textarea id="userInput" placeholder="Message Levian AI..." onkeypress="handleEnter(event)"></textarea>
-            <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+        <!-- Landing UI Animation -->
+        <div id="landing-ui">
+            <h2 id="beta-text">Beta Preview</h2>
+            <img src="LEVIANICON.png" id="hero-logo-center" alt="Levian Center">
+            <h1 id="hero-text">How can I help you today?</h1>
         </div>
-    </div>
 
-    <!-- SETTINGS MODAL -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-card">
-            <h3 style="margin-bottom: 5px;">Settings</h3>
-            
-            <!-- 7 Accent Color Themes -->
-            <div>
-                <label style="font-size: 0.85rem;">Accent Color Theme</label>
-                <div class="color-palette" id="colorPalette">
-                    <div class="color-swatch" style="background: #3b82f6;" onclick="selectAccentColor('#3b82f6', this)"></div>
-                    <div class="color-swatch" style="background: #8b5cf6;" onclick="selectAccentColor('#8b5cf6', this)"></div>
-                    <div class="color-swatch" style="background: #ec4899;" onclick="selectAccentColor('#ec4899', this)"></div>
-                    <div class="color-swatch" style="background: #ef4444;" onclick="selectAccentColor('#ef4444', this)"></div>
-                    <div class="color-swatch" style="background: #f97316;" onclick="selectAccentColor('#f97316', this)"></div>
-                    <div class="color-swatch" style="background: #10b981;" onclick="selectAccentColor('#10b981', this)"></div>
-                    <div class="color-swatch" style="background: #06b6d4;" onclick="selectAccentColor('#06b6d4', this)"></div>
+        <div id="chat-stream"></div>
+
+        <!-- Input System -->
+        <div id="input-container" class="glass" onclick="focusInput(event)">
+            <textarea id="userInput" placeholder="Talk with Levian..." rows="1" oninput="autoResize(this)" onkeydown="handleInput(event)"></textarea>
+            <div class="controls">
+                <select id="modelSelect">
+                    <option value="gemini-3.1-flash-lite">1.5 Sparx (Lite) </option>
+                    <option value="gemini-3.5-flash" selected>2.1 Lightning (PRO)</option>
+                </select>
+                <button class="send-btn" onclick="sendMessage(event)">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Modal Panel -->
+    <div id="settings-modal" class="modal-overlay" onclick="closeSettingsOuter(event)">
+        <div class="settings-card glass" onclick="event.stopPropagation()">
+            <div class="settings-header">
+                <span class="settings-title">Settings Panel</span>
+                <button class="close-modal" onclick="closeSettings()">✕</button>
+            </div>
+
+            <!-- Themes Slot -->
+            <div class="settings-section">
+                <span class="settings-label">THEMES</span>
+                <div class="themes-slot-grid">
+                    <div class="theme-card-option" data-t="dark" onclick="selectTheme('dark')">
+                        <div class="theme-card-preview" style="background:#00f3ff;"></div> Dark
+                    </div>
+                    <div class="theme-card-option" data-t="light" onclick="selectTheme('light')">
+                        <div class="theme-card-preview" style="background:#0078ff;"></div> Light
+                    </div>
+                    <div class="theme-card-option" data-t="blue" onclick="selectTheme('blue')">
+                        <div class="theme-card-preview" style="background:#38bdf8;"></div> Midnight
+                    </div>
+                    <div class="theme-card-option" data-t="cyberpunk" onclick="selectTheme('cyberpunk')">
+                        <div class="theme-card-preview" style="background:#ff007f;"></div> Cyberpunk
+                    </div>
+                    <div class="theme-card-option" data-t="matrix" onclick="selectTheme('matrix')">
+                        <div class="theme-card-preview" style="background:#00ff66;"></div> Matrix
+                    </div>
+                    <div class="theme-card-option" data-t="sunset" onclick="selectTheme('sunset')">
+                        <div class="theme-card-preview" style="background:#ff9900;"></div> Sunset
+                    </div>
+                    <div class="theme-card-option" data-t="oled" onclick="selectTheme('oled')">
+                        <div class="theme-card-preview" style="background:#ffffff; border:1px solid #777;"></div> OLED
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <label style="font-size: 0.85rem;">System Instruction</label>
-                <input type="text" id="sysPromptInput" class="setting-input" placeholder="e.g. You are a helpful assistant...">
+            <div class="settings-section" style="border-top:1px solid var(--glass-border); padding-top:15px;">
+                <span class="settings-label">DATA MANAGEMENT</span>
+                <button class="glass-btn" style="color:#ff4444;" onclick="clearAllChats()">Clear All Saved Conversations</button>
             </div>
-            
-            <div>
-                <label style="font-size: 0.85rem;">Worker URL</label>
-                <input type="text" id="workerUrlInput" class="setting-input" value="https://levianai.qzz.io/levian">
-            </div>
-            
-            <button class="glass-btn" style="background: var(--accent-color); color: white; border: none;" onclick="saveSettings()">Save & Close</button>
         </div>
     </div>
 
-    <!-- APPLICATION SCRIPT -->
     <script>
-        let workerUrl = "https://levianai.qzz.io/levian";
-        let systemPrompt = "";
-        let currentAccentColor = "#3b82f6";
-        
-        const stream = document.getElementById("stream");
-        const userInput = document.getElementById("userInput");
-        const sendBtn = document.getElementById("sendBtn");
-        const historyContainer = document.getElementById("chat-history");
+        /* --- SESSION & PERSISTENCE SYSTEM --- */
+        let sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
+        let activeSessionId = null;
 
-        let chats = {}; 
-        let currentChatId = null;
-        let isFirstMessage = true;
+        const body = document.body;
+        const stream = document.getElementById('chat-stream');
+        const input = document.getElementById('userInput');
+        const historyList = document.getElementById('history-list');
 
-        /* --- 1. INITIALIZATION & STORAGE --- */
+        const systemPrompt = { 
+            role: "user", 
+            parts: [{ text: "System instruction: You are an AI named Levian. You do not have any other specific personality traits or background descriptions. You only know that your name is Levian." }] 
+        };
+        const systemAck = { role: "model", parts: [{ text: "Understood." }] };
+
         function init() {
-            // Theme setup
-            const savedTheme = localStorage.getItem("levian_theme") || "dark";
-            document.body.setAttribute("data-theme", savedTheme);
-            updateSettingsIcon(savedTheme === "dark");
-
-            // Accent color setup
-            const savedColor = localStorage.getItem("levian_accent_color") || "#3b82f6";
-            setAccentColor(savedColor);
-
-            // Worker & System Instruction
-            const savedWorker = localStorage.getItem("levian_worker_url");
-            if (savedWorker) {
-                workerUrl = savedWorker;
-                document.getElementById("workerUrlInput").value = savedWorker;
-            }
-            systemPrompt = localStorage.getItem("levian_sys_prompt") || "";
-            document.getElementById("sysPromptInput").value = systemPrompt;
-
-            const storedChats = localStorage.getItem("levian_chats");
-            if (storedChats) {
-                try { chats = JSON.parse(storedChats); } catch(e) { chats = {}; }
-            }
-
-            renderSidebarHistory();
-
-            const chatIds = Object.keys(chats);
-            if (chatIds.length > 0) {
-                loadChat(chatIds[chatIds.length - 1]);
-            } else {
-                startNewChat();
-            }
-        }
-
-        function saveState() {
-            localStorage.setItem("levian_chats", JSON.stringify(chats));
-        }
-
-        /* --- 2. ACCENT COLOR & THEME LOGIC --- */
-        function selectAccentColor(hexColor, swatchEl) {
-            currentAccentColor = hexColor;
-            setAccentColor(hexColor);
+            // Restore theme preferences
+            const savedTheme = localStorage.getItem('levian_theme') || 'dark';
+            selectTheme(savedTheme);
+            renderHistorySidebar();
             
-            const swatches = document.querySelectorAll(".color-swatch");
-            swatches.forEach(s => s.classList.remove("active"));
-            if (swatchEl) swatchEl.classList.add("active");
+            // Default: Show Landing Page
+            startNewChat();
         }
 
-        function setAccentColor(hexColor) {
-            currentAccentColor = hexColor;
-            document.documentElement.style.setProperty("--accent-color", hexColor);
+        function saveStateToStorage() {
+            localStorage.setItem('levian_sessions', JSON.stringify(sessions));
         }
 
-        function toggleTheme() {
-            const currentTheme = document.body.getAttribute("data-theme");
-            const newTheme = currentTheme === "dark" ? "light" : "dark";
-            document.body.setAttribute("data-theme", newTheme);
-            localStorage.setItem("levian_theme", newTheme);
-            updateSettingsIcon(newTheme === "dark");
-        }
-
-        function updateSettingsIcon(isDarkMode) {
-            const icon = document.getElementById("settings-icon");
-            if (isDarkMode) {
-                icon.src = "settingsw.png"; // White icon for dark theme
-            } else {
-                icon.src = "settingsb.png"; // Black icon for light theme
-            }
-        }
-
-        function openSettings() {
-            // Highlight active colorSwatch
-            const swatches = document.querySelectorAll(".color-swatch");
-            swatches.forEach(s => {
-                if (s.style.backgroundColor === currentAccentColor || s.style.background === currentAccentColor) {
-                    s.classList.add("active");
-                } else {
-                    s.classList.remove("active");
-                }
-            });
-            document.getElementById("settingsModal").classList.add("active");
-        }
-
-        function saveSettings() {
-            workerUrl = document.getElementById("workerUrlInput").value.trim();
-            systemPrompt = document.getElementById("sysPromptInput").value.trim();
-            
-            localStorage.setItem("levian_worker_url", workerUrl);
-            localStorage.setItem("levian_sys_prompt", systemPrompt);
-            localStorage.setItem("levian_accent_color", currentAccentColor);
-            
-            document.getElementById("settingsModal").classList.remove("active");
-        }
-
-        /* --- 3. CHAT MANAGEMENT --- */
+        /* --- CHAT CREATION & HANDLING --- */
         function startNewChat() {
-            currentChatId = "chat_" + Date.now();
-            chats[currentChatId] = { title: "New Chat", messages: [] };
-            isFirstMessage = true;
-            stream.innerHTML = "";
-            saveState();
-            renderSidebarHistory();
+            activeSessionId = null;
+            stream.innerHTML = '';
+            body.classList.remove('chat-active');
+            renderHistorySidebar();
         }
 
-        function loadChat(chatId) {
-            if (!chats[chatId]) return;
-            currentChatId = chatId;
-            isFirstMessage = chats[chatId].messages.length === 0;
-            stream.innerHTML = "";
+        function renderHistorySidebar() {
+            historyList.innerHTML = '';
+            sessions.forEach(session => {
+                const isActive = session.id === activeSessionId ? 'active' : '';
+                const item = document.createElement('div');
+                item.className = `history-item ${isActive}`;
+                item.innerHTML = `
+                    <span onclick="loadSession('${session.id}')" title="${escapeHtml(session.title)}">${escapeHtml(session.title)}</span>
+                    <button class="delete-btn" onclick="deleteSession('${session.id}', event)">✕</button>
+                `;
+                historyList.appendChild(item);
+            });
+        }
 
-            chats[chatId].messages.forEach(msg => {
-                const bubble = appendMessage(msg.text, msg.role === "user" ? "user-message" : "ai-message");
-                if (msg.role === "model") {
-                    bubble.innerHTML = parseMarkdown(msg.text);
+        function loadSession(id) {
+            activeSessionId = id;
+            const session = sessions.find(s => s.id === id);
+            if (!session) return;
+            
+            stream.innerHTML = '';
+            body.classList.add('chat-active');
+            
+            session.history.forEach(msg => {
+                if(msg.role === 'user' && msg.parts[0].text.startsWith("System instruction:")) return;
+                if(msg.role === 'model' && msg.parts[0].text === "Understood.") return;
+
+                if (msg.role === 'user') {
+                    stream.innerHTML += `
+                        <div class="msg-wrapper user-wrapper">
+                            <div class="msg user">${formatMarkdown(msg.parts[0].text)}</div>
+                        </div>`;
+                } else {
+                    stream.innerHTML += `
+                        <div class="msg-wrapper">
+                            <img src="LEVIANICON.png" class="ai-avatar" alt="L">
+                            <div class="msg ai">${formatMarkdown(msg.parts[0].text)}</div>
+                        </div>`;
                 }
             });
 
-            renderSidebarHistory();
             stream.scrollTop = stream.scrollHeight;
+            renderHistorySidebar();
         }
 
-        function deleteChat(e, chatId) {
-            e.stopPropagation();
-            delete chats[chatId];
-            saveState();
-            const remaining = Object.keys(chats);
-            if (remaining.length > 0) {
-                loadChat(remaining[remaining.length - 1]);
-            } else {
+        function deleteSession(id, event) {
+            event.stopPropagation();
+            sessions = sessions.filter(s => s.id !== id);
+            saveStateToStorage();
+            if (activeSessionId === id) {
                 startNewChat();
+            } else {
+                renderHistorySidebar();
             }
         }
 
-        function renderSidebarHistory() {
-            historyContainer.innerHTML = "";
-            const keys = Object.keys(chats).reverse();
-
-            keys.forEach(id => {
-                const chat = chats[id];
-                const item = document.createElement("div");
-                item.className = `history-item ${id === currentChatId ? 'active' : ''}`;
-                item.onclick = () => loadChat(id);
-
-                const titleSpan = document.createElement("span");
-                titleSpan.className = "history-title";
-                titleSpan.innerText = "💬 " + (chat.title || "New Chat");
-
-                const delBtn = document.createElement("button");
-                delBtn.className = "history-del-btn";
-                delBtn.innerHTML = "&times;";
-                delBtn.onclick = (e) => deleteChat(e, id);
-
-                item.appendChild(titleSpan);
-                item.appendChild(delBtn);
-                historyContainer.appendChild(item);
-            });
+        function clearAllChats() {
+            if (confirm("Are you sure you want to delete all saved conversations?")) {
+                sessions = [];
+                saveStateToStorage();
+                startNewChat();
+                closeSettings();
+            }
         }
 
         function exportCurrentChat() {
-            if (!currentChatId || !chats[currentChatId]) return;
-            const chatData = chats[currentChatId];
-            const blob = new Blob([JSON.stringify(chatData, null, 2)], { type: "application/json" });
+            if (!activeSessionId) {
+                alert("Start or open a conversation before exporting.");
+                return;
+            }
+            const session = sessions.find(s => s.id === activeSessionId);
+            if (!session) return;
+
+            let txtContent = session.history.map(msg => {
+                if (msg.role === 'user' && msg.parts[0].text.startsWith("System instruction:")) return "";
+                if (msg.role === 'model' && msg.parts[0].text === "Understood.") return "";
+                return `${msg.role === 'user' ? 'User' : 'Levian'}: ${msg.parts[0].text}`;
+            }).filter(Boolean).join('\n\n');
+
+            const blob = new Blob([txtContent], { type: "text/plain" });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
+            const a = document.createElement('a');
             a.href = url;
-            a.download = `${chatData.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
+            a.download = `Levian_${session.title.replace(/[^a-z0-9]/gi, '_')}.txt`;
             a.click();
             URL.revokeObjectURL(url);
         }
 
-        /* --- 4. MESSAGING & API --- */
-        function handleEnter(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        }
-
-        async function sendMessage() {
-            const text = userInput.value.trim();
-            if (!text) return;
-
-            const selectedModel = document.getElementById("modelSelect").value;
-
-            appendMessage(text, "user-message");
-            userInput.value = "";
-
-            chats[currentChatId].messages.push({ role: "user", text: text });
-            saveState();
-
-            if (isFirstMessage) {
-                generateSidebarTitle(text, selectedModel);
-                isFirstMessage = false;
-            }
-
-            let apiContents = chats[currentChatId].messages.map(m => ({
-                role: m.role,
-                parts: [{ text: m.text }]
-            }));
-
-            if (systemPrompt) {
-                apiContents.unshift({
-                    role: "user",
-                    parts: [{ text: `[System Instruction: ${systemPrompt}]` }]
-                });
-            }
-
-            const aiBubble = appendMessage("", "ai-message");
-            const cursorBlock = document.createElement("span");
-            cursorBlock.className = "cursor";
-            aiBubble.appendChild(cursorBlock);
-
+        /* --- BACKGROUND AI TITLING --- */
+        async function fetchAutoTitleInBackground(sessionId, userPrompt, aiResponse) {
             try {
-                const response = await fetch(`${workerUrl}?model=${selectedModel}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: apiContents })
-                });
+                const workerUrl = `https://nova-tech-web.aroush-yt31.workers.dev/levian?model=gemini-3.1-flash-lite`;
+                
+                const titlePrompt = `what should be the name of this conversation in short term title don't say anything else except the title. Context: User asked "${userPrompt.substring(0,200)}", AI answered "${aiResponse.substring(0,200)}"`;
 
-                const data = await response.json();
-                const aiText = data.candidates[0].content.parts[0].text;
-
-                chats[currentChatId].messages.push({ role: "model", text: aiText });
-                saveState();
-
-                // Typing effect with smooth scroll
-                typeText(aiBubble, cursorBlock, aiText, 15);
-
-            } catch (err) {
-                console.error(err);
-                aiBubble.innerText = "Error connecting to AI. Please try again.";
-                if (cursorBlock) cursorBlock.remove();
-            }
-        }
-
-        function appendMessage(text, className) {
-            const div = document.createElement("div");
-            div.className = `message ${className}`;
-            div.innerText = text;
-            stream.appendChild(div);
-            stream.scrollTop = stream.scrollHeight;
-            return div;
-        }
-
-        /* --- 5. SMOOTH SCROLL & TYPING LOOP --- */
-        function typeText(element, cursorBlock, fullRawText, speed) {
-            let i = 0;
-            const printClock = setInterval(() => {
-                element.innerHTML = parseMarkdown(fullRawText.slice(0, i + 1));
-                if (cursorBlock) element.appendChild(cursorBlock);
-                i++;
-
-                const userDistanceFromBottom = stream.scrollHeight - stream.scrollTop - stream.clientHeight;
-                if (userDistanceFromBottom < 280) {
-                    stream.scrollTop = stream.scrollHeight;
-                }
-
-                if (i >= fullRawText.length) {
-                    clearInterval(printClock);
-                    if (cursorBlock) cursorBlock.remove();
-                    element.innerHTML = parseMarkdown(fullRawText);
-                }
-            }, speed);
-        }
-
-        /* --- 6. BACKGROUND TITLE GENERATION --- */
-        async function generateSidebarTitle(firstUserMessage, model) {
-            const titlePrompt = `User message: "${firstUserMessage}"\n\nWhat should be the name of this conversation in short term title don't say anything else except the title`;
-
-            try {
-                const response = await fetch(`${workerUrl}?model=${model}`, {
+                const res = await fetch(workerUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -711,29 +643,217 @@
                     })
                 });
 
-                const data = await response.json();
-                let generatedTitle = data.candidates[0].content.parts[0].text;
-                generatedTitle = generatedTitle.replace(/^["']|["']$/g, '').replace(/\n/g, ' ').trim();
+                const data = await res.json();
+                if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+                    let generatedTitle = data.candidates[0].content.parts[0].text.trim();
+                    generatedTitle = generatedTitle.replace(/^["']|["']$/g, '').replace(/\n/g, ' ');
 
-                if (chats[currentChatId]) {
-                    chats[currentChatId].title = generatedTitle;
-                    saveState();
-                    renderSidebarHistory();
+                    const sessionObj = sessions.find(s => s.id === sessionId);
+                    if (sessionObj) {
+                        sessionObj.title = generatedTitle;
+                        saveStateToStorage();
+                        renderHistorySidebar();
+                    }
                 }
-            } catch (error) {
-                console.error("Failed to generate title:", error);
+            } catch (err) {
+                console.warn("Background titling failed:", err);
             }
         }
 
-        /* --- 7. BASIC MARKDOWN PARSER --- */
-        function parseMarkdown(text) {
-            if (!text) return "";
-            text = text.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
-            text = text.replace(/`([^`]+)`/g, '<code style="background:var(--glass-hover); padding:2px 4px; border-radius:4px;">$1</code>');
-            text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-            text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-            text = text.replace(/\n/g, '<br>');
-            return text;
+        /* --- API & MESSAGING --- */
+        async function sendMessage(e) {
+            if(e) e.stopPropagation(); 
+            
+            const text = input.value.trim();
+            if (!text) return;
+
+            let isFirstMessageInNewChat = false;
+
+            if (activeSessionId === null) {
+                isFirstMessageInNewChat = true;
+                const newId = Date.now().toString();
+                const newSession = {
+                    id: newId,
+                    title: text.substring(0, 25) + (text.length > 25 ? "..." : ""),
+                    history: [systemPrompt, systemAck]
+                };
+                sessions.unshift(newSession);
+                activeSessionId = newId;
+                saveStateToStorage();
+            }
+
+            if (!body.classList.contains('chat-active')) {
+                body.classList.add('chat-active');
+            }
+
+            const currentSession = sessions.find(s => s.id === activeSessionId);
+
+            stream.innerHTML += `
+                <div class="msg-wrapper user-wrapper">
+                    <div class="msg user">${formatMarkdown(text)}</div>
+                </div>`;
+                
+            input.value = '';
+            input.style.height = 'auto';
+            stream.scrollTop = stream.scrollHeight;
+
+            currentSession.history.push({ role: "user", parts: [{ text: text }] });
+            saveStateToStorage();
+            renderHistorySidebar();
+
+            const aiMsgId = "ai-msg-" + Date.now();
+            const aiAvatarId = "ai-avatar-" + Date.now();
+            const requestSessionId = activeSessionId; 
+            
+            stream.innerHTML += `
+                <div class="msg-wrapper">
+                    <img src="LEVIANICON.png" id="${aiAvatarId}" class="ai-avatar thinking" alt="L">
+                    <div class="msg ai" id="${aiMsgId}"></div>
+                </div>`;
+                
+            stream.scrollTop = stream.scrollHeight;
+
+            try {
+                const selectedModel = document.getElementById('modelSelect').value;
+                const workerUrl = `https://nova-tech-web.aroush-yt31.workers.dev/levian?model=${selectedModel}`;
+                
+                const res = await fetch(workerUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: currentSession.history }) 
+                });
+
+                const data = await res.json();
+                let aiResponse = "";
+                let validPayload = false;
+                
+                if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+                    aiResponse = data.candidates[0].content.parts[0].text;
+                    validPayload = true;
+                } else if (data.error) {
+                    aiResponse = `API Error: ${data.error.message || JSON.stringify(data.error)}`;
+                } else {
+                    aiResponse = `Unknown API response format.`;
+                }
+                
+                if (activeSessionId === requestSessionId) {
+                    document.getElementById(aiAvatarId).classList.remove('thinking');
+                    const targetElement = document.getElementById(aiMsgId);
+                    runFastTypewriter(targetElement, aiResponse, requestSessionId);
+                }
+                
+                if (validPayload) {
+                    currentSession.history.push({ role: "model", parts: [{ text: aiResponse }] });
+                    saveStateToStorage();
+
+                    if (isFirstMessageInNewChat) {
+                        fetchAutoTitleInBackground(requestSessionId, text, aiResponse);
+                    }
+                }
+
+            } catch (err) {
+                if (activeSessionId === requestSessionId) {
+                    document.getElementById(aiAvatarId).classList.remove('thinking');
+                    document.getElementById(aiMsgId).innerHTML = `<span style="color:#ff4444;">Network Core Failure: ${err.message}</span>`;
+                }
+            }
+        }
+
+        /* --- SETTINGS & THEMES --- */
+        function openSettings() {
+            document.getElementById('settings-modal').classList.add('active');
+        }
+        function closeSettings() {
+            document.getElementById('settings-modal').classList.remove('active');
+        }
+        function closeSettingsOuter(e) {
+            if (e.target.id === 'settings-modal') closeSettings();
+        }
+
+        function selectTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('levian_theme', themeName);
+            
+            document.querySelectorAll('.theme-card-option').forEach(card => {
+                if(card.getAttribute('data-t') === themeName) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            // Dynamically check text main color brightness or current theme to swap settings icon
+            const computedColor = getComputedStyle(document.documentElement).getPropertyValue('--text-main').trim();
+            const settingsImg = document.getElementById('settings-img');
+            if (settingsImg) {
+                // If light theme (e.g. #111111), use black icon 'settingsb.png', otherwise white 'settingsw.png'
+                if (themeName === 'light' || computedColor === '#111111') {
+                    settingsImg.src = 'settingsb.png';
+                } else {
+                    settingsImg.src = 'settingsw.png';
+                }
+            }
+        }
+
+        /* --- HELPERS & TYPEWRITER --- */
+        function autoResize(el) {
+            el.style.height = 'auto';
+            el.style.height = (el.scrollHeight) + 'px';
+        }
+
+        function handleInput(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage(e);
+            }
+        }
+
+        function focusInput(e) {
+            if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
+                input.focus();
+            }
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function formatMarkdown(str) {
+            let clean = escapeHtml(str);
+            clean = clean.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            clean = clean.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+            return clean.replace(/\n/g, '<br>');
+        }
+
+        function runFastTypewriter(targetElement, fullRawText, sessionIdCheck) {
+            let i = 0;
+            targetElement.innerHTML = '<span class="text-payload"></span><span class="typing-cursor">|</span>';
+            const payloadContainer = targetElement.querySelector('.text-payload');
+            const cursorBlock = targetElement.querySelector('.typing-cursor');
+            
+            const speed = 4;       
+            const frameStep = 5; 
+            
+            const printClock = setInterval(() => {
+                if (activeSessionId !== sessionIdCheck) {
+                    clearInterval(printClock);
+                    return;
+                }
+
+                i += frameStep;
+                const slice = fullRawText.slice(0, i);
+                payloadContainer.innerHTML = formatMarkdown(slice);
+                
+                const userDistanceFromBottom = stream.scrollHeight - stream.scrollTop - stream.clientHeight;
+                if (userDistanceFromBottom < 280) {
+                    stream.scrollTop = stream.scrollHeight;
+                }
+                
+                if (i >= fullRawText.length) {
+                    clearInterval(printClock);
+                    if(cursorBlock) cursorBlock.remove(); 
+                }
+            }, speed);
         }
 
         init();
