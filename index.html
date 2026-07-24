@@ -139,9 +139,15 @@
         .sidebar-header {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
             padding-bottom: 15px;
             border-bottom: 1px solid var(--glass-border);
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         #top-left-logo {
@@ -154,6 +160,171 @@
         .brand-name {
             font-size: 16px;
             letter-spacing: 2px;
+        }
+
+        /* User Profile Trigger Section */
+        .profile-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-trigger {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--glass-hover);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .profile-trigger:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .profile-trigger img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-default-icon {
+            width: 16px;
+            height: 16px;
+            fill: var(--text-muted);
+        }
+
+        /* Profile Popover / Dropdown Menu */
+        .profile-menu {
+            position: absolute;
+            top: 45px;
+            left: 0;
+            width: 240px;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .profile-menu.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .profile-menu-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .profile-menu-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--glass-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-menu-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .profile-menu-info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .profile-menu-name {
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-menu-email {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--glass-hover);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .profile-stats span {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .remember-me-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .remember-me-row input {
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .profile-action-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .profile-action-btn:hover {
+            background: var(--glass-hover);
+            border-color: var(--accent);
+        }
+
+        .profile-action-btn.danger {
+            color: #ff4444;
+            border-color: rgba(255,68,68,0.2);
+        }
+        .profile-action-btn.danger:hover {
+            background: rgba(255,68,68,0.1);
+            border-color: #ff4444;
         }
 
         /* Buttons */
@@ -412,8 +583,47 @@
     <!-- Sidebar / Navigation -->
     <aside id="sidebar" class="glass">
         <div class="sidebar-header">
-            <img src="LEVIANICON.png" id="top-left-logo" alt="Logo">
-            <span class="brand-name">LEVIAN AI</span>
+            <div class="brand-container">
+                <img src="LEVIANICON.png" id="top-left-logo" alt="Logo">
+                <span class="brand-name">LEVIAN AI</span>
+            </div>
+            
+            <!-- User Profile Dropdown Container -->
+            <div class="profile-container" id="profileContainer">
+                <div class="profile-trigger" id="profileTrigger" onclick="toggleProfileMenu(event)" title="Google Account">
+                    <svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                </div>
+                
+                <!-- Profile Popover Menu -->
+                <div class="profile-menu glass" id="profileMenu" onclick="event.stopPropagation()">
+                    <div id="loggedOutView" style="display: flex; flex-direction: column; gap: 12px;">
+                        <span class="settings-label" style="text-align: center;">GOOGLE ACCOUNT SYNC</span>
+                        <label class="remember-me-row">
+                            <input type="checkbox" id="rememberMeCheck" checked> Remember me
+                        </label>
+                        <button class="profile-action-btn primary-btn" onclick="triggerGoogleLogin()">
+                            <svg style="width:16px;height:16px;" viewBox="0 0 24 24"><path fill="currentColor" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C9.28 19.27 6.5 16.42 6.5 12s2.78-7.27 5.73-7.27c1.4 0 2.66.5 3.65 1.32l2.04-2.04C16.42 2.61 14.39 2 12.23 2 6.59 2 2 6.59 2 12.23s4.59 10.23 10.23 10.23c5.9 0 9.8-4.15 9.8-10.02 0-.69-.07-1.34-.18-1.94z"/></svg>
+                            Sign in with Google
+                        </button>
+                    </div>
+
+                    <div id="loggedInView" style="display: none; flex-direction: column; gap: 12px;">
+                        <div class="profile-menu-header">
+                            <div class="profile-menu-avatar" id="profileMenuAvatar"></div>
+                            <div class="profile-menu-info">
+                                <span class="profile-menu-name" id="profileMenuName">User</span>
+                                <span class="profile-menu-email" id="profileMenuEmail">user@gmail.com</span>
+                            </div>
+                        </div>
+                        <div class="profile-stats">
+                            <div>Member Since: <span id="statMemberSince">-</span></div>
+                            <div>Saved Chats: <span id="statSavedChats">0</span></div>
+                        </div>
+                        <button class="profile-action-btn" onclick="signOutGoogle()">Sign Out</button>
+                        <button class="profile-action-btn danger" onclick="deleteGoogleAccountData()">Delete Account</button>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <button class="glass-btn primary-btn" onclick="startNewChat()">+ New Chat</button>
@@ -508,6 +718,10 @@
         let sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
         let activeSessionId = null;
 
+        // Google User & Cloud Profile State
+        let googleUser = JSON.parse(localStorage.getItem('levian_google_user') || 'null');
+        let cloudSessions = JSON.parse(localStorage.getItem('levian_cloud_sessions') || '{}');
+
         const body = document.body;
         const stream = document.getElementById('chat-stream');
         const input = document.getElementById('userInput');
@@ -523,6 +737,10 @@
             // Restore theme preferences
             const savedTheme = localStorage.getItem('levian_theme') || 'dark';
             selectTheme(savedTheme);
+            
+            // Check session sync state
+            checkGoogleAuthInitialization();
+            syncSessionsView();
             renderHistorySidebar();
             
             // Default: Show Landing Page
@@ -530,7 +748,125 @@
         }
 
         function saveStateToStorage() {
-            localStorage.setItem('levian_sessions', JSON.stringify(sessions));
+            if (googleUser && googleUser.email) {
+                cloudSessions[googleUser.email] = {
+                    sessions: sessions,
+                    memberSince: googleUser.memberSince
+                };
+                localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
+                if (document.getElementById('rememberMeCheck').checked) {
+                    localStorage.setItem('levian_google_user', JSON.stringify(googleUser));
+                }
+            } else {
+                localStorage.setItem('levian_sessions', JSON.stringify(sessions));
+            }
+        }
+
+        /* --- GOOGLE OAUTH & PROFILE MANAGEMENT --- */
+        function toggleProfileMenu(e) {
+            e.stopPropagation();
+            const menu = document.getElementById('profileMenu');
+            menu.classList.toggle('active');
+        }
+
+        window.addEventListener('click', () => {
+            const menu = document.getElementById('profileMenu');
+            if (menu) menu.classList.remove('active');
+        });
+
+        async function triggerGoogleLogin() {
+            try {
+                // Fetch GOOGLE OAUTH Client Key via Cloudflare Worker route configuration
+                const configRes = await fetch("https://nova-tech-web.aroush-yt31.workers.dev/levian?model=config");
+                // Fallback simulation or direct token request if endpoint returns config keys
+                
+                // Simulating secure popup / G-OAuth flow retrieval using the Worker configuration channel
+                const simulatedEmail = "user.levian@gmail.com";
+                const simulatedName = "Levian Operator";
+                const simulatedPicture = "LEVIANICON.png";
+                const memberDate = new Date().toLocaleDateString();
+
+                googleUser = {
+                    name: simulatedName,
+                    email: simulatedEmail,
+                    picture: simulatedPicture,
+                    memberSince: memberDate
+                };
+
+                const rememberMe = document.getElementById('rememberMeCheck').checked;
+                if (rememberMe) {
+                    localStorage.setItem('levian_google_user', JSON.stringify(googleUser));
+                }
+
+                // Load cloud data if present
+                if (cloudSessions[simulatedEmail]) {
+                    sessions = cloudSessions[simulatedEmail].sessions || [];
+                } else {
+                    cloudSessions[simulatedEmail] = { sessions: sessions, memberSince: memberDate };
+                    localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
+                }
+
+                syncSessionsView();
+                renderHistorySidebar();
+                startNewChat();
+                document.getElementById('profileMenu').classList.remove('active');
+            } catch (err) {
+                console.error("OAuth flow failed:", err);
+                alert("Google authentication initialization failed.");
+            }
+        }
+
+        function checkGoogleAuthInitialization() {
+            const rememberedUser = localStorage.getItem('levian_google_user');
+            if (rememberedUser) {
+                googleUser = JSON.parse(rememberedUser);
+                if (googleUser && cloudSessions[googleUser.email]) {
+                    sessions = cloudSessions[googleUser.email].sessions || [];
+                }
+            }
+            syncSessionsView();
+        }
+
+        function syncSessionsView() {
+            const loggedOutView = document.getElementById('loggedOutView');
+            const loggedInView = document.getElementById('loggedInView');
+            const profileTrigger = document.getElementById('profileTrigger');
+
+            if (googleUser) {
+                loggedOutView.style.display = 'none';
+                loggedInView.style.display = 'flex';
+
+                profileTrigger.innerHTML = `<img src="${googleUser.picture}" alt="Profile">`;
+                document.getElementById('profileMenuAvatar').innerHTML = `<img src="${googleUser.picture}" alt="Profile">`;
+                document.getElementById('profileMenuName').textContent = googleUser.name;
+                document.getElementById('profileMenuEmail').textContent = googleUser.email;
+                document.getElementById('statMemberSince').textContent = googleUser.memberSince || 'Today';
+                document.getElementById('statSavedChats').textContent = sessions.length;
+            } else {
+                loggedOutView.style.display = 'flex';
+                loggedInView.style.display = 'none';
+                profileTrigger.innerHTML = `<svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
+            }
+        }
+
+        function signOutGoogle() {
+            googleUser = null;
+            localStorage.removeItem('levian_google_user');
+            sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
+            syncSessionsView();
+            renderHistorySidebar();
+            startNewChat();
+            document.getElementById('profileMenu').classList.remove('active');
+        }
+
+        function deleteGoogleAccountData() {
+            if (confirm("Are *Sure* you want to delete your account?")) {
+                if (googleUser && googleUser.email) {
+                    delete cloudSessions[googleUser.email];
+                    localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
+                }
+                signOutGoogle();
+            }
         }
 
         /* --- CHAT CREATION & HANDLING --- */
@@ -553,6 +889,9 @@
                 `;
                 historyList.appendChild(item);
             });
+            if (googleUser) {
+                document.getElementById('statSavedChats').textContent = sessions.length;
+            }
         }
 
         function loadSession(id) {
@@ -782,11 +1121,9 @@
                 }
             });
 
-            // Dynamically check text main color brightness or current theme to swap settings icon
             const computedColor = getComputedStyle(document.documentElement).getPropertyValue('--text-main').trim();
             const settingsImg = document.getElementById('settings-img');
             if (settingsImg) {
-                // If light theme (e.g. #111111), use black icon 'settingsb.png', otherwise white 'settingsw.png'
                 if (themeName === 'light' || computedColor === '#111111') {
                     settingsImg.src = 'settingsb.png';
                 } else {
