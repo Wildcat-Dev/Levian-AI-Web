@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Levian AI</title>
     <link rel="icon" type="image/png" href="LEVIANICON.png">
+    <!-- Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
         @font-face {
@@ -12,13 +14,11 @@
             src: url('Anurati-Regular.otf') format('opentype');
         }
 
-        /* Enforce uppercase for all Anurati styled text */
         .anurati-font, .brand-name, #beta-text {
             font-family: 'Anurati', sans-serif !important;
             text-transform: uppercase !important;
         }
 
-        /* --- THEME VARIABLES --- */
         :root {
             --bg-color: #050505;
             --glass-bg: rgba(20, 20, 20, 0.4);
@@ -31,7 +31,6 @@
             --sidebar-width: 270px;
         }
 
-        /* Light Theme */
         [data-theme="light"] {
             --bg-color: #f0f2f5;
             --glass-bg: rgba(255, 255, 255, 0.65);
@@ -43,7 +42,6 @@
             --user-bubble: rgba(0, 0, 0, 0.05);
         }
 
-        /* Midnight Blue Theme */
         [data-theme="blue"] {
             --bg-color: #020617;
             --glass-bg: rgba(15, 23, 42, 0.6);
@@ -55,7 +53,6 @@
             --user-bubble: rgba(56, 189, 248, 0.1);
         }
 
-        /* Cyberpunk Neon */
         [data-theme="cyberpunk"] {
             --bg-color: #0d021a;
             --glass-bg: rgba(25, 10, 45, 0.6);
@@ -67,7 +64,6 @@
             --user-bubble: rgba(255, 0, 127, 0.15);
         }
 
-        /* Matrix Green */
         [data-theme="matrix"] {
             --bg-color: #020d04;
             --glass-bg: rgba(4, 25, 8, 0.6);
@@ -79,7 +75,6 @@
             --user-bubble: rgba(0, 255, 102, 0.1);
         }
 
-        /* Sunset Amber */
         [data-theme="sunset"] {
             --bg-color: #120a05;
             --glass-bg: rgba(30, 15, 8, 0.6);
@@ -91,7 +86,6 @@
             --user-bubble: rgba(255, 153, 0, 0.1);
         }
 
-        /* Pure OLED Black */
         [data-theme="oled"] {
             --bg-color: #000000;
             --glass-bg: rgba(10, 10, 10, 0.9);
@@ -115,7 +109,6 @@
             transition: background-color 0.4s ease;
         }
 
-        /* --- GLASSMORPHISM UTILS --- */
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -123,7 +116,6 @@
             border: 1px solid var(--glass-border);
         }
 
-        /* --- SIDEBAR --- */
         #sidebar {
             width: var(--sidebar-width);
             height: 100%;
@@ -162,7 +154,6 @@
             letter-spacing: 2px;
         }
 
-        /* User Profile Trigger Section */
         .profile-container {
             position: relative;
             cursor: pointer;
@@ -198,7 +189,6 @@
             fill: var(--text-muted);
         }
 
-        /* Profile Popover / Dropdown Menu */
         .profile-menu {
             position: absolute;
             top: 45px;
@@ -327,7 +317,6 @@
             border-color: #ff4444;
         }
 
-        /* Buttons */
         .glass-btn {
             background: transparent;
             color: var(--text-main);
@@ -350,7 +339,6 @@
         }
         .primary-btn { background: var(--glass-hover); border-color: var(--glass-border); }
 
-        /* Discord-Style Animated Settings Button */
         .settings-btn {
             justify-content: flex-start;
             gap: 12px;
@@ -373,7 +361,6 @@
             transform: rotate(90deg);
         }
 
-        /* Chat History List */
         #history-list {
             flex-grow: 1;
             overflow-y: auto;
@@ -417,7 +404,6 @@
         .history-item:hover .delete-btn { opacity: 1; }
         .delete-btn:hover { transform: scale(1.2); }
 
-        /* Sidebar Footer */
         .sidebar-footer {
             border-top: 1px solid var(--glass-border);
             padding-top: 15px;
@@ -426,7 +412,6 @@
             gap: 10px;
         }
 
-        /* --- MAIN CHAT AREA --- */
         #main-content {
             flex-grow: 1;
             position: relative;
@@ -434,7 +419,6 @@
             flex-direction: column;
         }
 
-        /* Landing Sequence */
         #landing-ui {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -460,7 +444,6 @@
             opacity: 0; transform: scale(0.95) translateY(-20px); pointer-events: none;
         }
 
-        /* Chat Stream */
         #chat-stream {
             flex-grow: 1;
             padding: 40px 10%;
@@ -500,7 +483,6 @@
         }
         @keyframes blink { to { visibility: hidden; } }
 
-        /* --- INPUT BAR --- */
         #input-container {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
             width: 80%; max-width: 800px;
@@ -531,7 +513,6 @@
         .send-btn svg { width: 24px; height: 24px; fill: currentColor; }
         .send-btn:hover { color: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
 
-        /* --- SETTINGS PANEL / MODAL --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
@@ -555,7 +536,6 @@
         .settings-section { display: flex; flex-direction: column; gap: 10px; }
         .settings-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
 
-        /* Themes Slot Grid */
         .themes-slot-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;
         }
@@ -580,7 +560,6 @@
 </head>
 <body>
 
-    <!-- Sidebar / Navigation -->
     <aside id="sidebar" class="glass">
         <div class="sidebar-header">
             <div class="brand-container">
@@ -588,13 +567,11 @@
                 <span class="brand-name">LEVIAN AI</span>
             </div>
             
-            <!-- User Profile Dropdown Container -->
             <div class="profile-container" id="profileContainer">
                 <div class="profile-trigger" id="profileTrigger" onclick="toggleProfileMenu(event)" title="Google Account">
                     <svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
                 </div>
                 
-                <!-- Profile Popover Menu -->
                 <div class="profile-menu glass" id="profileMenu" onclick="event.stopPropagation()">
                     <div id="loggedOutView" style="display: flex; flex-direction: column; gap: 12px;">
                         <span class="settings-label" style="text-align: center;">GOOGLE ACCOUNT SYNC</span>
@@ -628,9 +605,7 @@
         
         <button class="glass-btn primary-btn" onclick="startNewChat()">+ New Chat</button>
         
-        <div id="history-list">
-            <!-- Dynamic Chat History -->
-        </div>
+        <div id="history-list"></div>
 
         <div class="sidebar-footer">
             <button class="glass-btn settings-btn" onclick="openSettings()">
@@ -643,10 +618,7 @@
         </div>
     </aside>
 
-    <!-- Main Workspace -->
     <main id="main-content">
-        
-        <!-- Landing UI Animation -->
         <div id="landing-ui">
             <h2 id="beta-text">Beta Preview</h2>
             <img src="LEVIANICON.png" id="hero-logo-center" alt="Levian Center">
@@ -655,7 +627,6 @@
 
         <div id="chat-stream"></div>
 
-        <!-- Input System -->
         <div id="input-container" class="glass" onclick="focusInput(event)">
             <textarea id="userInput" placeholder="Talk with Levian..." rows="1" oninput="autoResize(this)" onkeydown="handleInput(event)"></textarea>
             <div class="controls">
@@ -670,7 +641,6 @@
         </div>
     </main>
 
-    <!-- Settings Modal Panel -->
     <div id="settings-modal" class="modal-overlay" onclick="closeSettingsOuter(event)">
         <div class="settings-card glass" onclick="event.stopPropagation()">
             <div class="settings-header">
@@ -678,7 +648,6 @@
                 <button class="close-modal" onclick="closeSettings()">✕</button>
             </div>
 
-            <!-- Themes Slot -->
             <div class="settings-section">
                 <span class="settings-label">THEMES</span>
                 <div class="themes-slot-grid">
@@ -714,13 +683,12 @@
     </div>
 
     <script>
-        /* --- SESSION & PERSISTENCE SYSTEM --- */
         let sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
         let activeSessionId = null;
 
-        // Google User & Cloud Profile State
         let googleUser = JSON.parse(localStorage.getItem('levian_google_user') || 'null');
         let cloudSessions = JSON.parse(localStorage.getItem('levian_cloud_sessions') || '{}');
+        let cachedOAuthKey = null;
 
         const body = document.body;
         const stream = document.getElementById('chat-stream');
@@ -734,17 +702,25 @@
         const systemAck = { role: "model", parts: [{ text: "Understood." }] };
 
         function init() {
-            // Restore theme preferences
             const savedTheme = localStorage.getItem('levian_theme') || 'dark';
             selectTheme(savedTheme);
-            
-            // Check session sync state
             checkGoogleAuthInitialization();
             syncSessionsView();
             renderHistorySidebar();
-            
-            // Default: Show Landing Page
             startNewChat();
+            fetchOAuthKey();
+        }
+
+        async function fetchOAuthKey() {
+            try {
+                const res = await fetch("https://nova-tech-web.aroush-yt31.workers.dev/levian?model=config", { method: "POST" });
+                const data = await res.json();
+                if (data.gOAuthKey) {
+                    cachedOAuthKey = data.gOAuthKey;
+                }
+            } catch (err) {
+                console.warn("Failed to retrieve OAuth config from worker", err);
+            }
         }
 
         function saveStateToStorage() {
@@ -762,7 +738,6 @@
             }
         }
 
-        /* --- GOOGLE OAUTH & PROFILE MANAGEMENT --- */
         function toggleProfileMenu(e) {
             e.stopPropagation();
             const menu = document.getElementById('profileMenu');
@@ -775,45 +750,77 @@
         });
 
         async function triggerGoogleLogin() {
-            try {
-                // Fetch GOOGLE OAUTH Client Key via Cloudflare Worker route configuration
-                const configRes = await fetch("https://nova-tech-web.aroush-yt31.workers.dev/levian?model=config");
-                // Fallback simulation or direct token request if endpoint returns config keys
-                
-                // Simulating secure popup / G-OAuth flow retrieval using the Worker configuration channel
-                const simulatedEmail = "user.levian@gmail.com";
-                const simulatedName = "Levian Operator";
-                const simulatedPicture = "LEVIANICON.png";
-                const memberDate = new Date().toLocaleDateString();
-
-                googleUser = {
-                    name: simulatedName,
-                    email: simulatedEmail,
-                    picture: simulatedPicture,
-                    memberSince: memberDate
-                };
-
-                const rememberMe = document.getElementById('rememberMeCheck').checked;
-                if (rememberMe) {
-                    localStorage.setItem('levian_google_user', JSON.stringify(googleUser));
-                }
-
-                // Load cloud data if present
-                if (cloudSessions[simulatedEmail]) {
-                    sessions = cloudSessions[simulatedEmail].sessions || [];
-                } else {
-                    cloudSessions[simulatedEmail] = { sessions: sessions, memberSince: memberDate };
-                    localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
-                }
-
-                syncSessionsView();
-                renderHistorySidebar();
-                startNewChat();
-                document.getElementById('profileMenu').classList.remove('active');
-            } catch (err) {
-                console.error("OAuth flow failed:", err);
-                alert("Google authentication initialization failed.");
+            if (!cachedOAuthKey) {
+                await fetchOAuthKey();
             }
+            if (!cachedOAuthKey) {
+                alert("Google Client ID could not be loaded from Worker environment.");
+                return;
+            }
+
+            if (typeof google === 'undefined' || !google.accounts) {
+                alert("Google Identity Services script is still loading. Please try again in a moment.");
+                return;
+            }
+
+            google.accounts.id.initialize({
+                client_id: cachedOAuthKey,
+                callback: handleGoogleCredentialResponse
+            });
+
+            google.accounts.id.prompt(notification => {
+                if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                    // Fallback to explicit programmatic prompt if One Tap doesn't pop up
+                    google.accounts.id.renderButton(
+                        document.getElementById('loggedOutView'),
+                        { theme: 'outline', size: 'large' }
+                    );
+                }
+            });
+        }
+
+        function decodeJWT(token) {
+            try {
+                let base64Url = token.split('.')[1];
+                let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                let jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function handleGoogleCredentialResponse(response) {
+            const payload = decodeJWT(response.credential);
+            if (!payload) {
+                alert("Failed to parse Google login profile.");
+                return;
+            }
+
+            const memberDate = new Date().toLocaleDateString();
+            googleUser = {
+                name: payload.name || "Google User",
+                email: payload.email,
+                picture: payload.picture || "LEVIANICON.png",
+                memberSince: memberDate
+            };
+
+            const rememberMe = document.getElementById('rememberMeCheck').checked;
+            if (rememberMe) {
+                localStorage.setItem('levian_google_user', JSON.stringify(googleUser));
+            }
+
+            if (cloudSessions[googleUser.email]) {
+                sessions = cloudSessions[googleUser.email].sessions || [];
+            } else {
+                cloudSessions[googleUser.email] = { sessions: sessions, memberSince: memberDate };
+                localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
+            }
+
+            syncSessionsView();
+            renderHistorySidebar();
+            startNewChat();
+            document.getElementById('profileMenu').classList.remove('active');
         }
 
         function checkGoogleAuthInitialization() {
@@ -869,7 +876,6 @@
             }
         }
 
-        /* --- CHAT CREATION & HANDLING --- */
         function startNewChat() {
             activeSessionId = null;
             stream.innerHTML = '';
@@ -967,11 +973,9 @@
             URL.revokeObjectURL(url);
         }
 
-        /* --- BACKGROUND AI TITLING --- */
         async function fetchAutoTitleInBackground(sessionId, userPrompt, aiResponse) {
             try {
                 const workerUrl = `https://nova-tech-web.aroush-yt31.workers.dev/levian?model=gemini-3.1-flash-lite`;
-                
                 const titlePrompt = `what should be the name of this conversation in short term title don't say anything else except the title. Context: User asked "${userPrompt.substring(0,200)}", AI answered "${aiResponse.substring(0,200)}"`;
 
                 const res = await fetch(workerUrl, {
@@ -999,7 +1003,6 @@
             }
         }
 
-        /* --- API & MESSAGING --- */
         async function sendMessage(e) {
             if(e) e.stopPropagation(); 
             
@@ -1098,7 +1101,6 @@
             }
         }
 
-        /* --- SETTINGS & THEMES --- */
         function openSettings() {
             document.getElementById('settings-modal').classList.add('active');
         }
@@ -1132,7 +1134,6 @@
             }
         }
 
-        /* --- HELPERS & TYPEWRITER --- */
         function autoResize(el) {
             el.style.height = 'auto';
             el.style.height = (el.scrollHeight) + 'px';
