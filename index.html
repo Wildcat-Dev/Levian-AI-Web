@@ -12,7 +12,13 @@
             src: url('Anurati-Regular.otf') format('opentype');
         }
 
-        /* --- THEME VARIABLES (Default: Dark) --- */
+        /* Enforce uppercase for all Anurati styled text */
+        .anurati-font, .brand-name, #beta-text {
+            font-family: 'Anurati', sans-serif !important;
+            text-transform: uppercase !important;
+        }
+
+        /* --- THEME VARIABLES --- */
         :root {
             --bg-color: #050505;
             --glass-bg: rgba(20, 20, 20, 0.4);
@@ -22,15 +28,15 @@
             --text-muted: #888888;
             --accent: #00f3ff;
             --user-bubble: rgba(255, 255, 255, 0.05);
-            --sidebar-width: 260px;
+            --sidebar-width: 270px;
         }
 
         /* Light Theme */
         [data-theme="light"] {
             --bg-color: #f0f2f5;
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --glass-hover: rgba(0, 0, 0, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(0, 0, 0, 0.12);
+            --glass-hover: rgba(0, 0, 0, 0.06);
             --text-main: #111111;
             --text-muted: #555555;
             --accent: #0078ff;
@@ -47,6 +53,54 @@
             --text-muted: #94a3b8;
             --accent: #38bdf8;
             --user-bubble: rgba(56, 189, 248, 0.1);
+        }
+
+        /* Cyberpunk Neon */
+        [data-theme="cyberpunk"] {
+            --bg-color: #0d021a;
+            --glass-bg: rgba(25, 10, 45, 0.6);
+            --glass-border: rgba(255, 0, 127, 0.25);
+            --glass-hover: rgba(255, 0, 127, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #b8860b;
+            --accent: #ff007f;
+            --user-bubble: rgba(255, 0, 127, 0.15);
+        }
+
+        /* Matrix Green */
+        [data-theme="matrix"] {
+            --bg-color: #020d04;
+            --glass-bg: rgba(4, 25, 8, 0.6);
+            --glass-border: rgba(0, 255, 102, 0.2);
+            --glass-hover: rgba(0, 255, 102, 0.12);
+            --text-main: #e0ffe8;
+            --text-muted: #4e8056;
+            --accent: #00ff66;
+            --user-bubble: rgba(0, 255, 102, 0.1);
+        }
+
+        /* Sunset Amber */
+        [data-theme="sunset"] {
+            --bg-color: #120a05;
+            --glass-bg: rgba(30, 15, 8, 0.6);
+            --glass-border: rgba(255, 153, 0, 0.25);
+            --glass-hover: rgba(255, 153, 0, 0.12);
+            --text-main: #fff5eb;
+            --text-muted: #a37f63;
+            --accent: #ff9900;
+            --user-bubble: rgba(255, 153, 0, 0.1);
+        }
+
+        /* Pure OLED Black */
+        [data-theme="oled"] {
+            --bg-color: #000000;
+            --glass-bg: rgba(10, 10, 10, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-hover: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #777777;
+            --accent: #ffffff;
+            --user-bubble: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -90,7 +144,6 @@
             border-bottom: 1px solid var(--glass-border);
         }
 
-        /* Top Left Logo (No Glow, Clean) */
         #top-left-logo {
             width: 32px;
             height: 32px;
@@ -99,7 +152,6 @@
         }
 
         .brand-name {
-            font-family: 'Anurati', sans-serif;
             font-size: 16px;
             letter-spacing: 2px;
         }
@@ -118,6 +170,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            font-size: 14px;
         }
         .glass-btn:hover {
             background: var(--glass-hover);
@@ -141,13 +194,20 @@
             padding: 12px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: 0.2s;
             color: var(--text-muted);
             border: 1px solid transparent;
+            overflow: hidden;
+        }
+        .history-item span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 80%;
         }
         .history-item:hover { background: var(--glass-hover); color: var(--text-main); }
         .history-item.active {
@@ -158,12 +218,12 @@
 
         .delete-btn {
             background: none; border: none; color: #ff4444; cursor: pointer;
-            opacity: 0; transition: 0.2s; font-size: 16px;
+            opacity: 0; transition: 0.2s; font-size: 15px;
         }
         .history-item:hover .delete-btn { opacity: 1; }
         .delete-btn:hover { transform: scale(1.2); }
 
-        /* Settings / Theme Area */
+        /* Sidebar Footer */
         .sidebar-footer {
             border-top: 1px solid var(--glass-border);
             padding-top: 15px;
@@ -171,20 +231,6 @@
             flex-direction: column;
             gap: 10px;
         }
-        .theme-selector {
-            display: flex;
-            justify-content: space-between;
-            background: var(--glass-hover);
-            border-radius: 8px;
-            padding: 4px;
-        }
-        .theme-dot {
-            width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.3s;
-        }
-        .theme-dot.dark { background: #000; }
-        .theme-dot.light { background: #fff; border: 1px solid #ccc; }
-        .theme-dot.blue { background: #020617; }
-        .theme-dot.active { border-color: var(--accent); }
 
         /* --- MAIN CHAT AREA --- */
         #main-content {
@@ -194,7 +240,7 @@
             flex-direction: column;
         }
 
-        /* Landing Sequence Elements */
+        /* Landing Sequence */
         #landing-ui {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -207,7 +253,6 @@
             pointer-events: none;
         }
         #beta-text {
-            font-family: 'Anurati', sans-serif;
             font-size: 14px; letter-spacing: 5px; color: var(--accent);
             opacity: 0.8; margin-bottom: 20px;
         }
@@ -231,7 +276,7 @@
             gap: 25px;
             opacity: 0;
             transition: opacity 0.6s ease;
-            padding-bottom: 150px; /* Space for input */
+            padding-bottom: 150px;
         }
         body.chat-active #chat-stream { opacity: 1; }
 
@@ -292,6 +337,46 @@
         .send-btn svg { width: 24px; height: 24px; fill: currentColor; }
         .send-btn:hover { color: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
 
+        /* --- SETTINGS PANEL / MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            z-index: 200; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .settings-card {
+            width: 90%; max-width: 480px; padding: 25px; border-radius: 16px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+        .settings-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--glass-border); padding-bottom: 12px;
+        }
+        .settings-title { font-size: 18px; font-weight: 600; }
+        .close-modal { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+        .close-modal:hover { color: var(--text-main); }
+
+        .settings-section { display: flex; flex-direction: column; gap: 10px; }
+        .settings-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+        /* Themes Slot Grid */
+        .themes-slot-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;
+        }
+        .theme-card-option {
+            padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);
+            background: var(--glass-hover); cursor: pointer; display: flex; align-items: center;
+            gap: 10px; transition: 0.2s; font-size: 12px;
+        }
+        .theme-card-option:hover, .theme-card-option.active {
+            border-color: var(--accent); color: var(--accent);
+        }
+        .theme-card-preview {
+            width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+        }
+
         @media (max-width: 768px) { 
             #sidebar { position: absolute; transform: translateX(-100%); }
             #sidebar.open { transform: translateX(0); }
@@ -301,7 +386,7 @@
 </head>
 <body>
 
-    <!-- Sidebar / Settings / History -->
+    <!-- Sidebar / Navigation -->
     <aside id="sidebar" class="glass">
         <div class="sidebar-header">
             <img src="LEVIANICON.png" id="top-left-logo" alt="Logo">
@@ -311,23 +396,19 @@
         <button class="glass-btn primary-btn" onclick="startNewChat()">+ New Chat</button>
         
         <div id="history-list">
-            <!-- Dynamic Chat History Injected Here -->
+            <!-- Dynamic Chat History -->
         </div>
 
         <div class="sidebar-footer">
-            <div class="theme-selector">
-                <div class="theme-dot dark active" onclick="setTheme('dark')"></div>
-                <div class="theme-dot light" onclick="setTheme('light')"></div>
-                <div class="theme-dot blue" onclick="setTheme('blue')"></div>
-            </div>
-            <button class="glass-btn" onclick="exportCurrentChat()">Export Chat Log</button>
+            <button class="glass-btn" onclick="openSettings()">⚙️ Settings</button>
+            <button class="glass-btn" onclick="exportCurrentChat()">📥 Export Chat Log</button>
         </div>
     </aside>
 
-    <!-- Main Interface -->
+    <!-- Main Workspace -->
     <main id="main-content">
         
-        <!-- Landing Start Animation -->
+        <!-- Landing UI Animation -->
         <div id="landing-ui">
             <h2 id="beta-text">Beta Preview</h2>
             <img src="LEVIANICON.png" id="hero-logo-center" alt="Levian Center">
@@ -352,9 +433,52 @@
         </div>
     </main>
 
+    <!-- Code2 Style Settings Modal Panel -->
+    <div id="settings-modal" class="modal-overlay" onclick="closeSettingsOuter(event)">
+        <div class="settings-card glass" onclick="event.stopPropagation()">
+            <div class="settings-header">
+                <span class="settings-title">Code2 Settings Panel</span>
+                <button class="close-modal" onclick="closeSettings()">✕</button>
+            </div>
+
+            <!-- Themes Slot -->
+            <div class="settings-section">
+                <span class="settings-label">THEMES SLOT</span>
+                <div class="themes-slot-grid">
+                    <div class="theme-card-option" data-t="dark" onclick="selectTheme('dark')">
+                        <div class="theme-card-preview" style="background:#00f3ff;"></div> Dark
+                    </div>
+                    <div class="theme-card-option" data-t="light" onclick="selectTheme('light')">
+                        <div class="theme-card-preview" style="background:#0078ff;"></div> Light
+                    </div>
+                    <div class="theme-card-option" data-t="blue" onclick="selectTheme('blue')">
+                        <div class="theme-card-preview" style="background:#38bdf8;"></div> Midnight
+                    </div>
+                    <div class="theme-card-option" data-t="cyberpunk" onclick="selectTheme('cyberpunk')">
+                        <div class="theme-card-preview" style="background:#ff007f;"></div> Cyberpunk
+                    </div>
+                    <div class="theme-card-option" data-t="matrix" onclick="selectTheme('matrix')">
+                        <div class="theme-card-preview" style="background:#00ff66;"></div> Matrix
+                    </div>
+                    <div class="theme-card-option" data-t="sunset" onclick="selectTheme('sunset')">
+                        <div class="theme-card-preview" style="background:#ff9900;"></div> Sunset
+                    </div>
+                    <div class="theme-card-option" data-t="oled" onclick="selectTheme('oled')">
+                        <div class="theme-card-preview" style="background:#ffffff; border:1px solid #777;"></div> OLED
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section" style="border-top:1px solid var(--glass-border); padding-top:15px;">
+                <span class="settings-label">DATA MANAGEMENT</span>
+                <button class="glass-btn" style="color:#ff4444;" onclick="clearAllChats()">Clear All Saved Conversations</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        /* --- RAM-BASED SESSION HISTORY SYSTEM --- */
-        let sessions = []; // Array of chat session objects
+        /* --- SESSION & PERSISTENCE SYSTEM --- */
+        let sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
         let activeSessionId = null;
 
         const body = document.body;
@@ -362,7 +486,6 @@
         const input = document.getElementById('userInput');
         const historyList = document.getElementById('history-list');
 
-        // System Prompt used for new chats
         const systemPrompt = { 
             role: "user", 
             parts: [{ text: "System instruction: You are an AI named Levian. You do not have any other specific personality traits or background descriptions. You only know that your name is Levian." }] 
@@ -370,31 +493,25 @@
         const systemAck = { role: "model", parts: [{ text: "Understood." }] };
 
         function init() {
-            startNewChat(); // Always start with a fresh unselected chat
+            // Restore theme preferences
+            const savedTheme = localStorage.getItem('levian_theme') || 'dark';
+            selectTheme(savedTheme);
+            renderHistorySidebar();
+            
+            // Default: Show Landing Page
+            startNewChat();
         }
 
+        function saveStateToStorage() {
+            localStorage.setItem('levian_sessions', JSON.stringify(sessions));
+        }
+
+        /* --- CHAT CREATION & HANDLING --- */
         function startNewChat() {
             activeSessionId = null;
             stream.innerHTML = '';
             body.classList.remove('chat-active');
             renderHistorySidebar();
-        }
-
-        function createSessionIfNeeded(firstMessageText) {
-            if (activeSessionId === null) {
-                const newId = Date.now().toString();
-                // Create Title from the first few words of the user's prompt
-                let title = firstMessageText.substring(0, 25);
-                if(firstMessageText.length > 25) title += "...";
-
-                sessions.unshift({
-                    id: newId,
-                    title: title,
-                    history: [systemPrompt, systemAck] // Inject persona rule implicitly
-                });
-                activeSessionId = newId;
-                renderHistorySidebar();
-            }
         }
 
         function renderHistorySidebar() {
@@ -404,7 +521,7 @@
                 const item = document.createElement('div');
                 item.className = `history-item ${isActive}`;
                 item.innerHTML = `
-                    <span onclick="loadSession('${session.id}')">${session.title}</span>
+                    <span onclick="loadSession('${session.id}')" title="${escapeHtml(session.title)}">${escapeHtml(session.title)}</span>
                     <button class="delete-btn" onclick="deleteSession('${session.id}', event)">✕</button>
                 `;
                 historyList.appendChild(item);
@@ -414,11 +531,11 @@
         function loadSession(id) {
             activeSessionId = id;
             const session = sessions.find(s => s.id === id);
+            if (!session) return;
             
             stream.innerHTML = '';
             body.classList.add('chat-active');
             
-            // Re-render UI based on RAM history (skip system prompts)
             session.history.forEach(msg => {
                 if(msg.role === 'user' && msg.parts[0].text.startsWith("System instruction:")) return;
                 if(msg.role === 'model' && msg.parts[0].text === "Understood.") return;
@@ -444,6 +561,7 @@
         function deleteSession(id, event) {
             event.stopPropagation();
             sessions = sessions.filter(s => s.id !== id);
+            saveStateToStorage();
             if (activeSessionId === id) {
                 startNewChat();
             } else {
@@ -451,9 +569,18 @@
             }
         }
 
+        function clearAllChats() {
+            if (confirm("Are you sure you want to delete all saved conversations?")) {
+                sessions = [];
+                saveStateToStorage();
+                startNewChat();
+                closeSettings();
+            }
+        }
+
         function exportCurrentChat() {
             if (!activeSessionId) {
-                alert("Start a chat first before exporting.");
+                alert("Start or open a conversation before exporting.");
                 return;
             }
             const session = sessions.find(s => s.id === activeSessionId);
@@ -474,83 +601,66 @@
             URL.revokeObjectURL(url);
         }
 
-        /* --- THEME SYSTEM --- */
-        function setTheme(themeName) {
-            document.documentElement.setAttribute('data-theme', themeName);
-            document.querySelectorAll('.theme-dot').forEach(dot => dot.classList.remove('active'));
-            document.querySelector(`.theme-dot.${themeName}`).classList.add('active');
-        }
+        /* --- BACKGROUND AI TITLING --- */
+        async function fetchAutoTitleInBackground(sessionId, userPrompt, aiResponse) {
+            try {
+                const workerUrl = `https://nova-tech-web.aroush-yt31.workers.dev/levian?model=gemini-3.1-flash-lite`;
+                
+                const titlePrompt = `what should be the name of this conversation in short term title don't say anything else except the title. Context: User asked "${userPrompt.substring(0,200)}", AI answered "${aiResponse.substring(0,200)}"`;
 
-        /* --- UI UTILS & FORMATTING --- */
-        function autoResize(el) {
-            el.style.height = 'auto';
-            el.style.height = (el.scrollHeight) + 'px';
-        }
+                const res = await fetch(workerUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ role: "user", parts: [{ text: titlePrompt }] }]
+                    })
+                });
 
-        function handleInput(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage(e);
+                const data = await res.json();
+                if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+                    let generatedTitle = data.candidates[0].content.parts[0].text.trim();
+                    // Sanitize quotes or newlines
+                    generatedTitle = generatedTitle.replace(/^["']|["']$/g, '').replace(/\n/g, ' ');
+
+                    const sessionObj = sessions.find(s => s.id === sessionId);
+                    if (sessionObj) {
+                        sessionObj.title = generatedTitle;
+                        saveStateToStorage();
+                        renderHistorySidebar();
+                    }
+                }
+            } catch (err) {
+                console.warn("Background titling failed:", err);
             }
         }
 
-        function focusInput(e) {
-            if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
-                input.focus();
-            }
-        }
-
-        function formatMarkdown(str) {
-            let clean = str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            clean = clean.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-            clean = clean.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-            return clean.replace(/\n/g, '<br>');
-        }
-
-        function runFastTypewriter(targetElement, fullRawText, sessionIdCheck) {
-            let i = 0;
-            targetElement.innerHTML = '<span class="text-payload"></span><span class="typing-cursor">|</span>';
-            const payloadContainer = targetElement.querySelector('.text-payload');
-            const cursorBlock = targetElement.querySelector('.typing-cursor');
-            
-            const speed = 4;       
-            const frameStep = 5; 
-            
-            const printClock = setInterval(() => {
-                // Abort typing if user switches to a different chat mid-generation
-                if (activeSessionId !== sessionIdCheck) {
-                    clearInterval(printClock);
-                    return;
-                }
-
-                i += frameStep;
-                const slice = fullRawText.slice(0, i);
-                payloadContainer.innerHTML = formatMarkdown(slice);
-                
-                const userDistanceFromBottom = stream.scrollHeight - stream.scrollTop - stream.clientHeight;
-                if (userDistanceFromBottom < 280) {
-                    stream.scrollTop = stream.scrollHeight;
-                }
-                
-                if (i >= fullRawText.length) {
-                    clearInterval(printClock);
-                    cursorBlock.remove(); 
-                }
-            }, speed);
-        }
-
-        /* --- API COMMUNICATION --- */
+        /* --- API & MESSAGING --- */
         async function sendMessage(e) {
             if(e) e.stopPropagation(); 
             
             const text = input.value.trim();
             if (!text) return;
 
-            // Trigger animations & set up session if it's the first message
+            let isFirstMessageInNewChat = false;
+
+            // Only create session object IF this is the first message sent
+            if (activeSessionId === null) {
+                isFirstMessageInNewChat = true;
+                const newId = Date.now().toString();
+                const newSession = {
+                    id: newId,
+                    title: text.substring(0, 25) + (text.length > 25 ? "..." : ""),
+                    history: [systemPrompt, systemAck]
+                };
+                sessions.unshift(newSession);
+                activeSessionId = newId;
+                saveStateToStorage();
+            }
+
             if (!body.classList.contains('chat-active')) {
                 body.classList.add('chat-active');
             }
-            createSessionIfNeeded(text);
+
             const currentSession = sessions.find(s => s.id === activeSessionId);
 
             // Render User Message
@@ -564,11 +674,13 @@
             stream.scrollTop = stream.scrollHeight;
 
             currentSession.history.push({ role: "user", parts: [{ text: text }] });
-            
+            saveStateToStorage();
+            renderHistorySidebar();
+
             // Prepare AI Bubble
             const aiMsgId = "ai-msg-" + Date.now();
             const aiAvatarId = "ai-avatar-" + Date.now();
-            const requestSessionId = activeSessionId; // Snapshot for type-writer check
+            const requestSessionId = activeSessionId; 
             
             stream.innerHTML += `
                 <div class="msg-wrapper">
@@ -601,7 +713,6 @@
                     aiResponse = `Unknown API response format.`;
                 }
                 
-                // Only render if the user hasn't switched chats while waiting for fetch
                 if (activeSessionId === requestSessionId) {
                     document.getElementById(aiAvatarId).classList.remove('thinking');
                     const targetElement = document.getElementById(aiMsgId);
@@ -610,6 +721,12 @@
                 
                 if (validPayload) {
                     currentSession.history.push({ role: "model", parts: [{ text: aiResponse }] });
+                    saveStateToStorage();
+
+                    // If this was the first exchange, trigger private AI background titling
+                    if (isFirstMessageInNewChat) {
+                        fetchAutoTitleInBackground(requestSessionId, text, aiResponse);
+                    }
                 }
 
             } catch (err) {
@@ -620,7 +737,91 @@
             }
         }
 
-        // Run Initialization
+        /* --- SETTINGS & THEMES --- */
+        function openSettings() {
+            document.getElementById('settings-modal').classList.add('active');
+        }
+        function closeSettings() {
+            document.getElementById('settings-modal').classList.remove('active');
+        }
+        function closeSettingsOuter(e) {
+            if (e.target.id === 'settings-modal') closeSettings();
+        }
+
+        function selectTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('levian_theme', themeName);
+            
+            document.querySelectorAll('.theme-card-option').forEach(card => {
+                if(card.getAttribute('data-t') === themeName) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+        }
+
+        /* --- HELPERS & TYPEWRITER --- */
+        function autoResize(el) {
+            el.style.height = 'auto';
+            el.style.height = (el.scrollHeight) + 'px';
+        }
+
+        function handleInput(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage(e);
+            }
+        }
+
+        function focusInput(e) {
+            if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
+                input.focus();
+            }
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function formatMarkdown(str) {
+            let clean = escapeHtml(str);
+            clean = clean.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            clean = clean.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+            return clean.replace(/\n/g, '<br>');
+        }
+
+        function runFastTypewriter(targetElement, fullRawText, sessionIdCheck) {
+            let i = 0;
+            targetElement.innerHTML = '<span class="text-payload"></span><span class="typing-cursor">|</span>';
+            const payloadContainer = targetElement.querySelector('.text-payload');
+            const cursorBlock = targetElement.querySelector('.typing-cursor');
+            
+            const speed = 4;       
+            const frameStep = 5; 
+            
+            const printClock = setInterval(() => {
+                if (activeSessionId !== sessionIdCheck) {
+                    clearInterval(printClock);
+                    return;
+                }
+
+                i += frameStep;
+                const slice = fullRawText.slice(0, i);
+                payloadContainer.innerHTML = formatMarkdown(slice);
+                
+                const userDistanceFromBottom = stream.scrollHeight - stream.scrollTop - stream.clientHeight;
+                if (userDistanceFromBottom < 280) {
+                    stream.scrollTop = stream.scrollHeight;
+                }
+                
+                if (i >= fullRawText.length) {
+                    clearInterval(printClock);
+                    if(cursorBlock) cursorBlock.remove(); 
+                }
+            }, speed);
+        }
+
         init();
     </script>
 </body>
