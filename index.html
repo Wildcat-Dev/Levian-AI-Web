@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Levian AI | Synapse UI</title>
+    <title>Levian AI</title>
     <link rel="icon" type="image/png" href="LEVIANICON.png">
     
     <style>
@@ -422,9 +422,8 @@
             <textarea id="userInput" placeholder="Talk with Levian..." rows="1" oninput="autoResize(this)" onkeydown="handleInput(event)"></textarea>
             <div class="controls">
                 <select id="modelSelect">
-                    <option value="gemini-3.1-flash-lite">3.1 flash-lite</option>
-                    <option value="gemini-3.5-flash" selected>3.5 flash</option>
-                    <option value="gemini-2.5-pro">2.5 pro</option>
+                    <option value="gemini-3.1-flash-lite">1.5 Sparx (Lite) </option>
+                    <option value="gemini-3.5-flash" selected>2.1 Lightning (PRO)</option>
                 </select>
                 <button class="send-btn" onclick="sendMessage(event)">
                     <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
@@ -437,13 +436,13 @@
     <div id="settings-modal" class="modal-overlay" onclick="closeSettingsOuter(event)">
         <div class="settings-card glass" onclick="event.stopPropagation()">
             <div class="settings-header">
-                <span class="settings-title">Code2 Settings Panel</span>
+                <span class="settings-title">Settings Panel</span>
                 <button class="close-modal" onclick="closeSettings()">✕</button>
             </div>
 
             <!-- Themes Slot -->
             <div class="settings-section">
-                <span class="settings-label">THEMES SLOT</span>
+                <span class="settings-label">THEMES</span>
                 <div class="themes-slot-grid">
                     <div class="theme-card-option" data-t="dark" onclick="selectTheme('dark')">
                         <div class="theme-card-preview" style="background:#00f3ff;"></div> Dark
