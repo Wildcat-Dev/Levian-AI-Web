@@ -177,12 +177,6 @@
             transform: scale(1.05);
         }
 
-        .profile-trigger img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .profile-default-icon {
             width: 16px;
             height: 16px;
@@ -569,7 +563,8 @@
             
             <div class="profile-container" id="profileContainer">
                 <div class="profile-trigger" id="profileTrigger" onclick="toggleProfileMenu(event)" title="Google Account">
-                    <svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    <svg class="profile-default-icon" id="defaultProfileSvg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                    <img id="profileTriggerImg" src="" alt="Profile" style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                 </div>
                 
                 <div class="profile-menu glass" id="profileMenu" onclick="event.stopPropagation()">
@@ -770,7 +765,6 @@
 
             google.accounts.id.prompt(notification => {
                 if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                    // Fallback to explicit programmatic prompt if One Tap doesn't pop up
                     google.accounts.id.renderButton(
                         document.getElementById('loggedOutView'),
                         { theme: 'outline', size: 'large' }
@@ -837,22 +831,30 @@
         function syncSessionsView() {
             const loggedOutView = document.getElementById('loggedOutView');
             const loggedInView = document.getElementById('loggedInView');
-            const profileTrigger = document.getElementById('profileTrigger');
+            const defaultProfileSvg = document.getElementById('defaultProfileSvg');
+            const profileTriggerImg = document.getElementById('profileTriggerImg');
 
             if (googleUser) {
                 loggedOutView.style.display = 'none';
                 loggedInView.style.display = 'flex';
 
-                profileTrigger.innerHTML = `<img src="${googleUser.picture}" alt="Profile">`;
-                document.getElementById('profileMenuAvatar').innerHTML = `<img src="${googleUser.picture}" alt="Profile">`;
-                document.getElementById('profileMenuName').textContent = googleUser.name;
-                document.getElementById('profileMenuEmail').textContent = googleUser.email;
+                if (googleUser.picture) {
+                    defaultProfileSvg.style.display = 'none';
+                    profileTriggerImg.src = googleUser.picture;
+                    profileTriggerImg.style.display = 'block';
+                }
+
+                document.getElementById('profileMenuAvatar').innerHTML = `<img src="${googleUser.picture || 'LEVIANICON.png'}" alt="Profile">`;
+                document.getElementById('profileMenuName').textContent = googleUser.name || "User";
+                document.getElementById('profileMenuEmail').textContent = googleUser.email || "";
                 document.getElementById('statMemberSince').textContent = googleUser.memberSince || 'Today';
                 document.getElementById('statSavedChats').textContent = sessions.length;
             } else {
                 loggedOutView.style.display = 'flex';
                 loggedInView.style.display = 'none';
-                profileTrigger.innerHTML = `<svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
+
+                profileTriggerImg.style.display = 'none';
+                defaultProfileSvg.style.display = 'block';
             }
         }
 
