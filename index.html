@@ -1,1200 +1,1307 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Levian AI</title>
-    <link rel="icon" type="image/png" href="LEVIANICON.png">
-    <!-- Google Identity Services SDK -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
-    <style>
-        @font-face {
-            font-family: 'Anurati';
-            src: url('Anurati-Regular.otf') format('opentype');
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Levian AI</title>
+<link class="brand-logo-img" rel="icon" type="image/png" href="LEVIANICON.png">
+<!-- Google Identity Services SDK -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
-        .anurati-font, .brand-name, #beta-text {
-            font-family: 'Anurati', sans-serif !important;
-            text-transform: uppercase !important;
-        }
+<style>
+@font-face {
+font-family: 'Anurati';
+src: url('Anurati-Regular.otf') format('opentype');
+}
 
-        :root {
-            --bg-color: #050505;
-            --glass-bg: rgba(20, 20, 20, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-hover: rgba(255, 255, 255, 0.15);
-            --text-main: #ffffff;
-            --text-muted: #888888;
-            --accent: #00f3ff;
-            --user-bubble: rgba(255, 255, 255, 0.05);
-            --sidebar-width: 270px;
-        }
+.anurati-font, .brand-name, #beta-text {
+font-family: 'Anurati', sans-serif !important;
+text-transform: uppercase !important;
+}
 
-        [data-theme="light"] {
-            --bg-color: #f0f2f5;
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(0, 0, 0, 0.12);
-            --glass-hover: rgba(0, 0, 0, 0.06);
-            --text-main: #111111;
-            --text-muted: #555555;
-            --accent: #0078ff;
-            --user-bubble: rgba(0, 0, 0, 0.05);
-        }
+:root {
+--bg-color: #050505;
+--glass-bg: rgba(20, 20, 20, 0.4);
+--glass-border: rgba(255, 255, 255, 0.08);
+--glass-hover: rgba(255, 255, 255, 0.15);
+--text-main: #ffffff;
+--text-muted: #888888;
+--accent: #00f3ff;
+--user-bubble: rgba(255, 255, 255, 0.05);
+--sidebar-width: 270px;
+--sidebar-collapsed-width: 68px;
+}
 
-        [data-theme="blue"] {
-            --bg-color: #020617;
-            --glass-bg: rgba(15, 23, 42, 0.6);
-            --glass-border: rgba(56, 189, 248, 0.2);
-            --glass-hover: rgba(56, 189, 248, 0.1);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --user-bubble: rgba(56, 189, 248, 0.1);
-        }
+[data-theme="light"] {
+--bg-color: #f0f2f5;
+--glass-bg: rgba(255, 255, 255, 0.65);
+--glass-border: rgba(0, 0, 0, 0.12);
+--glass-hover: rgba(0, 0, 0, 0.06);
+--text-main: #111111;
+--text-muted: #555555;
+--accent: #0078ff;
+--user-bubble: rgba(0, 0, 0, 0.05);
+}
 
-        [data-theme="cyberpunk"] {
-            --bg-color: #0d021a;
-            --glass-bg: rgba(25, 10, 45, 0.6);
-            --glass-border: rgba(255, 0, 127, 0.25);
-            --glass-hover: rgba(255, 0, 127, 0.15);
-            --text-main: #ffffff;
-            --text-muted: #b8860b;
-            --accent: #ff007f;
-            --user-bubble: rgba(255, 0, 127, 0.15);
-        }
+[data-theme="blue"] {
+--bg-color: #020617;
+--glass-bg: rgba(15, 23, 42, 0.6);
+--glass-border: rgba(56, 189, 248, 0.2);
+--glass-hover: rgba(56, 189, 248, 0.1);
+--text-main: #f8fafc;
+--text-muted: #94a3b8;
+--accent: #38bdf8;
+--user-bubble: rgba(56, 189, 248, 0.1);
+}
 
-        [data-theme="matrix"] {
-            --bg-color: #020d04;
-            --glass-bg: rgba(4, 25, 8, 0.6);
-            --glass-border: rgba(0, 255, 102, 0.2);
-            --glass-hover: rgba(0, 255, 102, 0.12);
-            --text-main: #e0ffe8;
-            --text-muted: #4e8056;
-            --accent: #00ff66;
-            --user-bubble: rgba(0, 255, 102, 0.1);
-        }
+[data-theme="cyberpunk"] {
+--bg-color: #0d021a;
+--glass-bg: rgba(25, 10, 45, 0.6);
+--glass-border: rgba(255, 0, 127, 0.25);
+--glass-hover: rgba(255, 0, 127, 0.15);
+--text-main: #ffffff;
+--text-muted: #b8860b;
+--accent: #ff007f;
+--user-bubble: rgba(255, 0, 127, 0.15);
+}
 
-        [data-theme="sunset"] {
-            --bg-color: #120a05;
-            --glass-bg: rgba(30, 15, 8, 0.6);
-            --glass-border: rgba(255, 153, 0, 0.25);
-            --glass-hover: rgba(255, 153, 0, 0.12);
-            --text-main: #fff5eb;
-            --text-muted: #a37f63;
-            --accent: #ff9900;
-            --user-bubble: rgba(255, 153, 0, 0.1);
-        }
+[data-theme="matrix"] {
+--bg-color: #020d04;
+--glass-bg: rgba(4, 25, 8, 0.6);
+--glass-border: rgba(0, 255, 102, 0.2);
+--glass-hover: rgba(0, 255, 102, 0.12);
+--text-main: #e0ffe8;
+--text-muted: #4e8056;
+--accent: #00ff66;
+--user-bubble: rgba(0, 255, 102, 0.1);
+}
 
-        [data-theme="oled"] {
-            --bg-color: #000000;
-            --glass-bg: rgba(10, 10, 10, 0.9);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-hover: rgba(255, 255, 255, 0.2);
-            --text-main: #ffffff;
-            --text-muted: #777777;
-            --accent: #ffffff;
-            --user-bubble: rgba(255, 255, 255, 0.1);
-        }
+[data-theme="sunset"] {
+--bg-color: #120a05;
+--glass-bg: rgba(30, 15, 8, 0.6);
+--glass-border: rgba(255, 153, 0, 0.25);
+--glass-hover: rgba(255, 153, 0, 0.12);
+--text-main: #fff5eb;
+--text-muted: #a37f63;
+--accent: #ff9900;
+--user-bubble: rgba(255, 153, 0, 0.1);
+}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+[data-theme="oled"] {
+--bg-color: #000000;
+--glass-bg: rgba(10, 10, 10, 0.9);
+--glass-border: rgba(255, 255, 255, 0.15);
+--glass-hover: rgba(255, 255, 255, 0.2);
+--text-main: #ffffff;
+--text-muted: #777777;
+--accent: #ffffff;
+--user-bubble: rgba(255, 255, 255, 0.1);
+}
 
-        body, html {
-            width: 100%; height: 100%;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            overflow: hidden;
-            display: flex;
-            transition: background-color 0.4s ease;
-        }
+{ box-sizing: border-box; margin: 0; padding: 0; }
 
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-        }
+body, html {
+width: 100%; height: 100%;
+background-color: var(--bg-color);
+color: var(--text-main);
+font-family: 'Segoe UI', system-ui, sans-serif;
+overflow: hidden;
+display: flex;
+transition: background-color 0.4s ease;
+}
 
-        #sidebar {
-            width: var(--sidebar-width);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--glass-border);
-            z-index: 20;
-            padding: 20px 15px;
-            gap: 15px;
-            transition: all 0.3s ease;
-        }
+.glass {
+background: var(--glass-bg);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid var(--glass-border);
+}
 
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--glass-border);
-        }
+#sidebar {
+width: var(--sidebar-width);
+height: 100%;
+display: flex;
+flex-direction: column;
+border-right: 1px solid var(--glass-border);
+z-index: 20;
+padding: 20px 15px;
+gap: 15px;
+transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease, gap 0.3s ease;
+overflow: hidden;
+flex-shrink: 0;
+}
 
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+/ Collapsed State Styles (Gemini layout) /
+#sidebar.collapsed {
+width: var(--sidebar-collapsed-width);
+padding: 20px 10px;
+gap: 20px;
+align-items: center;
+}
 
-        #top-left-logo {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            opacity: 0.9;
-        }
+#sidebar.collapsed .brand-name,
+#sidebar.collapsed #sidebar-toggle-btn,
+#sidebar.collapsed .glass-btn,
+#sidebar.collapsed #history-list,
+#sidebar.collapsed .sidebar-footer {
+display: none !important;
+}
 
-        .brand-name {
-            font-size: 16px;
-            letter-spacing: 2px;
-        }
+#sidebar.collapsed .sidebar-header {
+flex-direction: column;
+justify-content: space-between;
+height: 100%;
+border-bottom: none;
+padding-bottom: 0;
+width: 100%;
+}
 
-        .profile-container {
-            position: relative;
-            cursor: pointer;
-        }
+#sidebar.collapsed .brand-container {
+flex-direction: column;
+align-items: center;
+gap: 20px;
+}
 
-        .profile-trigger {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--glass-hover);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            transition: 0.3s;
-        }
+#sidebar.collapsed .profile-container {
+margin-top: auto;
+}
 
-        .profile-trigger:hover {
-            border-color: var(--accent);
-            transform: scale(1.05);
-        }
+#sidebar.collapsed .profile-menu {
+bottom: 45px;
+top: auto;
+left: 10px;
+}
 
-        .profile-trigger img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.sidebar-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding-bottom: 15px;
+border-bottom: 1px solid var(--glass-border);
+width: 100%;
+}
 
-        .profile-default-icon {
-            width: 16px;
-            height: 16px;
-            fill: var(--text-muted);
-        }
+.brand-container {
+display: flex;
+align-items: center;
+gap: 12px;
+}
 
-        .profile-menu {
-            position: absolute;
-            top: 45px;
-            left: 0;
-            width: 240px;
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 100;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(-10px);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+#top-left-logo {
+width: 32px;
+height: 32px;
+object-fit: contain;
+opacity: 0.9;
+transition: transform 0.2s;
+}
+#top-left-logo:hover {
+transform: scale(1.05);
+}
 
-        .profile-menu.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
+.brand-name {
+font-size: 16px;
+letter-spacing: 2px;
+white-space: nowrap;
+}
 
-        .profile-menu-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--glass-border);
-        }
+/ Toggle Button /
+#sidebar-toggle-btn {
+background: transparent;
+border: none;
+color: var(--text-muted);
+cursor: pointer;
+padding: 6px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: 0.2s;
+border-radius: 8px;
+}
+#sidebar-toggle-btn:hover {
+background: var(--glass-hover);
+color: var(--accent);
+}
+#sidebar-toggle-btn svg {
+width: 20px;
+height: 20px;
+}
 
-        .profile-menu-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--glass-hover);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
+.profile-container {
+position: relative;
+cursor: pointer;
+}
 
-        .profile-menu-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.profile-trigger {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+background: var(--glass-hover);
+border: 1px solid var(--glass-border);
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+transition: 0.3s;
+}
 
-        .profile-menu-info {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+.profile-trigger:hover {
+border-color: var(--accent);
+transform: scale(1.05);
+}
 
-        .profile-menu-name {
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+.profile-trigger img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
 
-        .profile-menu-email {
-            font-size: 11px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+.profile-default-icon {
+width: 16px;
+height: 16px;
+fill: var(--text-muted);
+}
 
-        .profile-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: 12px;
-            color: var(--text-muted);
-            background: var(--glass-hover);
-            padding: 10px;
-            border-radius: 8px;
-        }
+.profile-menu {
+position: absolute;
+top: 45px;
+left: 0;
+width: 240px;
+border-radius: 12px;
+padding: 15px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+z-index: 100;
+box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+opacity: 0;
+pointer-events: none;
+transform: translateY(-10px);
+transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-        .profile-stats span {
-            color: var(--text-main);
-            font-weight: 500;
-        }
+.profile-menu.active {
+opacity: 1;
+pointer-events: auto;
+transform: translateY(0);
+}
 
-        .remember-me-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--text-muted);
-            cursor: pointer;
-            user-select: none;
-        }
+.profile-menu-header {
+display: flex;
+align-items: center;
+gap: 10px;
+padding-bottom: 10px;
+border-bottom: 1px solid var(--glass-border);
+}
 
-        .remember-me-row input {
-            accent-color: var(--accent);
-            cursor: pointer;
-        }
+.profile-menu-avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+overflow: hidden;
+background: var(--glass-hover);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
 
-        .profile-action-btn {
-            background: transparent;
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
+.profile-menu-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-        .profile-action-btn:hover {
-            background: var(--glass-hover);
-            border-color: var(--accent);
-        }
+.profile-menu-info {
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
 
-        .profile-action-btn.danger {
-            color: #ff4444;
-            border-color: rgba(255,68,68,0.2);
-        }
-        .profile-action-btn.danger:hover {
-            background: rgba(255,68,68,0.1);
-            border-color: #ff4444;
-        }
+.profile-menu-name {
+font-size: 13px;
+font-weight: 600;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
 
-        .glass-btn {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--glass-border);
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-        .glass-btn:hover {
-            background: var(--glass-hover);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        .primary-btn { background: var(--glass-hover); border-color: var(--glass-border); }
+.profile-menu-email {
+font-size: 11px;
+color: var(--text-muted);
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
 
-        .settings-btn {
-            justify-content: flex-start;
-            gap: 12px;
-        }
-        .settings-icon-wrapper {
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .settings-icon {
-            width: 18px;
-            height: 18px;
-            object-fit: contain;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .glass-btn.settings-btn:hover .settings-icon {
-            transform: rotate(90deg);
-        }
+.profile-stats {
+display: flex;
+flex-direction: column;
+gap: 6px;
+font-size: 12px;
+color: var(--text-muted);
+background: var(--glass-hover);
+padding: 10px;
+border-radius: 8px;
+}
 
-        #history-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        #history-list::-webkit-scrollbar { width: 4px; }
-        #history-list::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
+.profile-stats span {
+color: var(--text-main);
+font-weight: 500;
+}
 
-        .history-item {
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.2s;
-            color: var(--text-muted);
-            border: 1px solid transparent;
-            overflow: hidden;
-        }
-        .history-item span {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 80%;
-        }
-        .history-item:hover { background: var(--glass-hover); color: var(--text-main); }
-        .history-item.active {
-            background: var(--glass-hover);
-            color: var(--text-main);
-            border: 1px solid var(--accent);
-        }
+.remember-me-row {
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 12px;
+color: var(--text-muted);
+cursor: pointer;
+user-select: none;
+}
 
-        .delete-btn {
-            background: none; border: none; color: #ff4444; cursor: pointer;
-            opacity: 0; transition: 0.2s; font-size: 15px;
-        }
-        .history-item:hover .delete-btn { opacity: 1; }
-        .delete-btn:hover { transform: scale(1.2); }
+.remember-me-row input {
+accent-color: var(--accent);
+cursor: pointer;
+}
 
-        .sidebar-footer {
-            border-top: 1px solid var(--glass-border);
-            padding-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+.profile-action-btn {
+background: transparent;
+border: 1px solid var(--glass-border);
+color: var(--text-main);
+padding: 8px 12px;
+border-radius: 8px;
+font-size: 12px;
+cursor: pointer;
+transition: 0.2s;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+}
 
-        #main-content {
-            flex-grow: 1;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
+.profile-action-btn:hover {
+background: var(--glass-hover);
+border-color: var(--accent);
+}
 
-        #landing-ui {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            z-index: 5;
-            pointer-events: none;
-        }
-        #beta-text {
-            font-size: 14px; letter-spacing: 5px; color: var(--accent);
-            opacity: 0.8; margin-bottom: 20px;
-        }
-        #hero-logo-center {
-            width: 200px; height: 200px; object-fit: contain; margin-bottom: 20px;
-        }
-        #hero-text {
-            font-size: 24px; font-weight: 300; letter-spacing: 1px; color: var(--text-muted);
-        }
-        body.chat-active #landing-ui {
-            opacity: 0; transform: scale(0.95) translateY(-20px); pointer-events: none;
-        }
+.profile-action-btn.danger {
+color: #ff4444;
+border-color: rgba(255,68,68,0.2);
+}
+.profile-action-btn.danger:hover {
+background: rgba(255,68,68,0.1);
+border-color: #ff4444;
+}
 
-        #chat-stream {
-            flex-grow: 1;
-            padding: 40px 10%;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            padding-bottom: 150px;
-        }
-        body.chat-active #chat-stream { opacity: 1; }
+.glass-btn {
+background: transparent;
+color: var(--text-main);
+border: 1px solid var(--glass-border);
+padding: 10px 15px;
+border-radius: 8px;
+cursor: pointer;
+transition: 0.3s;
+font-weight: 500;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+font-size: 14px;
+white-space: nowrap;
+}
+.glass-btn:hover {
+background: var(--glass-hover);
+border-color: var(--accent);
+color: var(--accent);
+}
+.primary-btn { background: var(--glass-hover); border-color: var(--glass-border); }
 
-        .msg-wrapper { display: flex; width: 100%; gap: 15px; align-items: flex-start; }
-        .msg-wrapper.user-wrapper { justify-content: flex-end; }
+.settings-btn {
+justify-content: flex-start;
+gap: 12px;
+}
+.settings-icon-wrapper {
+width: 20px;
+height: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+.settings-icon {
+width: 18px;
+height: 18px;
+object-fit: contain;
+transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.glass-btn.settings-btn:hover .settings-icon {
+transform: rotate(90deg);
+}
 
-        .ai-avatar {
-            width: 35px; height: 35px; object-fit: contain; flex-shrink: 0;
-        }
-        .ai-avatar.thinking { animation: spin 2s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+#history-list {
+flex-grow: 1;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+#history-list::-webkit-scrollbar { width: 4px; }
+#history-list::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
 
-        .msg {
-            max-width: 75%; line-height: 1.6; font-size: 15px; padding: 14px 20px; 
-            border-radius: 12px; word-wrap: break-word;
-        }
-        .msg.user {
-            background: var(--user-bubble); border: 1px solid var(--glass-border);
-            border-bottom-right-radius: 4px;
-        }
-        .msg.ai {
-            background: transparent; color: var(--text-main); padding-left: 5px;
-        }
+.history-item {
+padding: 12px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 13px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+transition: 0.2s;
+color: var(--text-muted);
+border: 1px solid transparent;
+overflow: hidden;
+}
+.history-item span {
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+width: 80%;
+}
+.history-item:hover { background: var(--glass-hover); color: var(--text-main); }
+.history-item.active {
+background: var(--glass-hover);
+color: var(--text-main);
+border: 1px solid var(--accent);
+}
 
-        .typing-cursor {
-            font-weight: bold; color: var(--accent); animation: blink 0.4s steps(2, start) infinite;
-        }
-        @keyframes blink { to { visibility: hidden; } }
+.delete-btn {
+background: none; border: none; color: #ff4444; cursor: pointer;
+opacity: 0; transition: 0.2s; font-size: 15px;
+}
+.history-item:hover .delete-btn { opacity: 1; }
+.delete-btn:hover { transform: scale(1.2); }
 
-        #input-container {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: 80%; max-width: 800px;
-            border-radius: 20px; padding: 10px 15px;
-            display: flex; align-items: flex-end; gap: 10px; cursor: text;
-            z-index: 100; transition: all 0.3s ease;
-        }
-        #input-container:focus-within { border-color: var(--accent); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+.sidebar-footer {
+border-top: 1px solid var(--glass-border);
+padding-top: 15px;
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
 
-        textarea {
-            flex-grow: 1; background: transparent; border: none; outline: none;
-            color: var(--text-main); font-family: inherit; font-size: 15px;
-            resize: none; min-height: 24px; max-height: 120px; padding: 8px 0; overflow-y: auto;
-        }
-        textarea::placeholder { color: var(--text-muted); font-family: monospace; letter-spacing: 1px; }
+#main-content {
+flex-grow: 1;
+position: relative;
+display: flex;
+flex-direction: column;
+min-width: 0; / Prevents overflow layouts in flex items /
+}
 
-        .controls { display: flex; align-items: center; gap: 10px; padding-bottom: 4px; }
-        select {
-            background: var(--glass-hover); color: var(--text-muted);
-            border: 1px solid var(--glass-border); border-radius: 8px;
-            padding: 6px; font-size: 12px; cursor: pointer; outline: none; -webkit-appearance: none;
-        }
+#landing-ui {
+position: absolute;
+top: 0; left: 0; width: 100%; height: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+transition: opacity 0.5s ease, transform 0.5s ease;
+z-index: 5;
+pointer-events: none;
+}
+#beta-text {
+font-size: 14px; letter-spacing: 5px; color: var(--accent);
+opacity: 0.8; margin-bottom: 20px;
+}
+#hero-logo-center {
+width: 200px; height: 200px; object-fit: contain; margin-bottom: 20px;
+}
+#hero-text {
+font-size: 24px; font-weight: 300; letter-spacing: 1px; color: var(--text-muted);
+}
+body.chat-active #landing-ui {
+opacity: 0; transform: scale(0.95) translateY(-20px); pointer-events: none;
+}
 
-        .send-btn {
-            background: transparent; border: none; color: var(--text-muted); cursor: pointer;
-            padding: 5px; transition: 0.3s;
-        }
-        .send-btn svg { width: 24px; height: 24px; fill: currentColor; }
-        .send-btn:hover { color: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
+#chat-stream {
+flex-grow: 1;
+padding: 40px 10%;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 25px;
+opacity: 0;
+transition: opacity 0.6s ease;
+padding-bottom: 150px;
+}
+body.chat-active #chat-stream { opacity: 1; }
 
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
-            z-index: 200; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+.msg-wrapper { display: flex; width: 100%; gap: 15px; align-items: flex-start; }
+.msg-wrapper.user-wrapper { justify-content: flex-end; }
 
-        .settings-card {
-            width: 90%; max-width: 480px; padding: 25px; border-radius: 16px;
-            display: flex; flex-direction: column; gap: 20px;
-        }
-        .settings-header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--glass-border); padding-bottom: 12px;
-        }
-        .settings-title { font-size: 18px; font-weight: 600; }
-        .close-modal { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
-        .close-modal:hover { color: var(--text-main); }
+.ai-avatar {
+width: 35px; height: 35px; object-fit: contain; flex-shrink: 0;
+}
+.ai-avatar.thinking { animation: spin 2s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-        .settings-section { display: flex; flex-direction: column; gap: 10px; }
-        .settings-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+.msg {
+max-width: 75%; line-height: 1.6; font-size: 15px; padding: 14px 20px;
+border-radius: 12px; word-wrap: break-word;
+}
+.msg.user {
+background: var(--user-bubble); border: 1px solid var(--glass-border);
+border-bottom-right-radius: 4px;
+}
+.msg.ai {
+background: transparent; color: var(--text-main); padding-left: 5px;
+}
 
-        .themes-slot-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;
-        }
-        .theme-card-option {
-            padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);
-            background: var(--glass-hover); cursor: pointer; display: flex; align-items: center;
-            gap: 10px; transition: 0.2s; font-size: 12px;
-        }
-        .theme-card-option:hover, .theme-card-option.active {
-            border-color: var(--accent); color: var(--accent);
-        }
-        .theme-card-preview {
-            width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
-        }
+.typing-cursor {
+font-weight: bold; color: var(--accent); animation: blink 0.4s steps(2, start) infinite;
+}
+@keyframes blink { to { visibility: hidden; } }
 
-        @media (max-width: 768px) { 
-            #sidebar { position: absolute; transform: translateX(-100%); }
-            #sidebar.open { transform: translateX(0); }
-            #input-container { width: 92%; }
-        }
-    </style>
+#input-container {
+position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+width: 80%; max-width: 800px;
+border-radius: 20px; padding: 10px 15px;
+display: flex; align-items: flex-end; gap: 10px; cursor: text;
+z-index: 100; transition: all 0.3s ease;
+}
+#input-container:focus-within { border-color: var(--accent); box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+
+textarea {
+flex-grow: 1; background: transparent; border: none; outline: none;
+color: var(--text-main); font-family: inherit; font-size: 15px;
+resize: none; min-height: 24px; max-height: 120px; padding: 8px 0; overflow-y: auto;
+}
+textarea::placeholder { color: var(--text-muted); font-family: monospace; letter-spacing: 1px; }
+
+.controls { display: flex; align-items: center; gap: 10px; padding-bottom: 4px; }
+select {
+background: var(--glass-hover); color: var(--text-muted);
+border: 1px solid var(--glass-border); border-radius: 8px;
+padding: 6px; font-size: 12px; cursor: pointer; outline: none; -webkit-appearance: none;
+}
+
+.send-btn {
+background: transparent; border: none; color: var(--text-muted); cursor: pointer;
+padding: 5px; transition: 0.3s;
+}
+.send-btn svg { width: 24px; height: 24px; fill: currentColor; }
+.send-btn:hover { color: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
+
+.modal-overlay {
+position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+z-index: 200; display: flex; align-items: center; justify-content: center;
+opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.settings-card {
+width: 90%; max-width: 480px; padding: 25px; border-radius: 16px;
+display: flex; flex-direction: column; gap: 20px;
+}
+.settings-header {
+display: flex; justify-content: space-between; align-items: center;
+border-bottom: 1px solid var(--glass-border); padding-bottom: 12px;
+}
+.settings-title { font-size: 18px; font-weight: 600; }
+.close-modal { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+.close-modal:hover { color: var(--text-main); }
+
+.settings-section { display: flex; flex-direction: column; gap: 10px; }
+.settings-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+.themes-slot-grid {
+display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px;
+}
+.theme-card-option {
+padding: 10px; border-radius: 8px; border: 1px solid var(--glass-border);
+background: var(--glass-hover); cursor: pointer; display: flex; align-items: center;
+gap: 10px; transition: 0.2s; font-size: 12px;
+}
+.theme-card-option:hover, .theme-card-option.active {
+border-color: var(--accent); color: var(--accent);
+}
+.theme-card-preview {
+width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+}
+
+/ Mobile View Rules: Always keep the collapsed mini-bar visible /
+@media (max-width: 768px) {
+#sidebar {
+position: absolute;
+left: 0;
+top: 0;
+height: 100%;
+z-index: 150;
+}
+#sidebar.collapsed {
+position: relative;
+z-index: 20;
+}
+#input-container {
+width: 90%;
+}
+}
+</style>
 </head>
 <body>
 
-    <aside id="sidebar" class="glass">
-        <div class="sidebar-header">
-            <div class="brand-container">
-                <img src="LEVIANICON.png" id="top-left-logo" alt="Logo">
-                <span class="brand-name">LEVIAN AI</span>
-            </div>
-            
-            <div class="profile-container" id="profileContainer">
-                <div class="profile-trigger" id="profileTrigger" onclick="toggleProfileMenu(event)" title="Google Account">
-                    <svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-                </div>
-                
-                <div class="profile-menu glass" id="profileMenu" onclick="event.stopPropagation()">
-                    <div id="loggedOutView" style="display: flex; flex-direction: column; gap: 12px;">
-                        <span class="settings-label" style="text-align: center;">GOOGLE ACCOUNT SYNC</span>
-                        <label class="remember-me-row">
-                            <input type="checkbox" id="rememberMeCheck" checked> Remember me
-                        </label>
-                        <button class="profile-action-btn primary-btn" onclick="triggerGoogleLogin()">
-                            <svg style="width:16px;height:16px;" viewBox="0 0 24 24"><path fill="currentColor" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C9.28 19.27 6.5 16.42 6.5 12s2.78-7.27 5.73-7.27c1.4 0 2.66.5 3.65 1.32l2.04-2.04C16.42 2.61 14.39 2 12.23 2 6.59 2 2 6.59 2 12.23s4.59 10.23 10.23 10.23c5.9 0 9.8-4.15 9.8-10.02 0-.69-.07-1.34-.18-1.94z"/></svg>
-                            Sign in with Google
-                        </button>
-                    </div>
-
-                    <div id="loggedInView" style="display: none; flex-direction: column; gap: 12px;">
-                        <div class="profile-menu-header">
-                            <div class="profile-menu-avatar" id="profileMenuAvatar"></div>
-                            <div class="profile-menu-info">
-                                <span class="profile-menu-name" id="profileMenuName">User</span>
-                                <span class="profile-menu-email" id="profileMenuEmail">user@gmail.com</span>
-                            </div>
-                        </div>
-                        <div class="profile-stats">
-                            <div>Member Since: <span id="statMemberSince">-</span></div>
-                            <div>Saved Chats: <span id="statSavedChats">0</span></div>
-                        </div>
-                        <button class="profile-action-btn" onclick="signOutGoogle()">Sign Out</button>
-                        <button class="profile-action-btn danger" onclick="deleteGoogleAccountData()">Delete Account</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <button class="glass-btn primary-btn" onclick="startNewChat()">+ New Chat</button>
-        
-        <div id="history-list"></div>
-
-        <div class="sidebar-footer">
-            <button class="glass-btn settings-btn" onclick="openSettings()">
-                <div class="settings-icon-wrapper">
-                    <img id="settings-img" src="settingsw.png" class="settings-icon" alt="Settings">
-                </div>
-                Settings
-            </button>
-            <button class="glass-btn" onclick="exportCurrentChat()">📥 Export Chat Log</button>
-        </div>
-    </aside>
-
-    <main id="main-content">
-        <div id="landing-ui">
-            <h2 id="beta-text">Beta Preview</h2>
-            <img src="LEVIANICON.png" id="hero-logo-center" alt="Levian Center">
-            <h1 id="hero-text">How can I help you today?</h1>
-        </div>
-
-        <div id="chat-stream"></div>
-
-        <div id="input-container" class="glass" onclick="focusInput(event)">
-            <textarea id="userInput" placeholder="Talk with Levian..." rows="1" oninput="autoResize(this)" onkeydown="handleInput(event)"></textarea>
-            <div class="controls">
-                <select id="modelSelect">
-                    <option value="gemini-3.1-flash-lite">1.5 Sparx (Lite) </option>
-                    <option value="gemini-3.5-flash" selected>2.1 Lightning (PRO)</option>
-                </select>
-                <button class="send-btn" onclick="sendMessage(event)">
-                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                </button>
-            </div>
-        </div>
-    </main>
-
-    <div id="settings-modal" class="modal-overlay" onclick="closeSettingsOuter(event)">
-        <div class="settings-card glass" onclick="event.stopPropagation()">
-            <div class="settings-header">
-                <span class="settings-title">Settings Panel</span>
-                <button class="close-modal" onclick="closeSettings()">✕</button>
-            </div>
-
-            <div class="settings-section">
-                <span class="settings-label">THEMES</span>
-                <div class="themes-slot-grid">
-                    <div class="theme-card-option" data-t="dark" onclick="selectTheme('dark')">
-                        <div class="theme-card-preview" style="background:#00f3ff;"></div> Dark
-                    </div>
-                    <div class="theme-card-option" data-t="light" onclick="selectTheme('light')">
-                        <div class="theme-card-preview" style="background:#0078ff;"></div> Light
-                    </div>
-                    <div class="theme-card-option" data-t="blue" onclick="selectTheme('blue')">
-                        <div class="theme-card-preview" style="background:#38bdf8;"></div> Midnight
-                    </div>
-                    <div class="theme-card-option" data-t="cyberpunk" onclick="selectTheme('cyberpunk')">
-                        <div class="theme-card-preview" style="background:#ff007f;"></div> Cyberpunk
-                    </div>
-                    <div class="theme-card-option" data-t="matrix" onclick="selectTheme('matrix')">
-                        <div class="theme-card-preview" style="background:#00ff66;"></div> Matrix
-                    </div>
-                    <div class="theme-card-option" data-t="sunset" onclick="selectTheme('sunset')">
-                        <div class="theme-card-preview" style="background:#ff9900;"></div> Sunset
-                    </div>
-                    <div class="theme-card-option" data-t="oled" onclick="selectTheme('oled')">
-                        <div class="theme-card-preview" style="background:#ffffff; border:1px solid #777;"></div> OLED
-                    </div>
-                </div>
-            </div>
-
-            <div class="settings-section" style="border-top:1px solid var(--glass-border); padding-top:15px;">
-                <span class="settings-label">DATA MANAGEMENT</span>
-                <button class="glass-btn" style="color:#ff4444;" onclick="clearAllChats()">Clear All Saved Conversations</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
-        let activeSessionId = null;
-
-        let googleUser = JSON.parse(localStorage.getItem('levian_google_user') || 'null');
-        let cloudSessions = JSON.parse(localStorage.getItem('levian_cloud_sessions') || '{}');
-        let cachedOAuthKey = null;
-
-        const body = document.body;
-        const stream = document.getElementById('chat-stream');
-        const input = document.getElementById('userInput');
-        const historyList = document.getElementById('history-list');
-
-        const systemPrompt = { 
-            role: "user", 
-            parts: [{ text: "System instruction: You are an AI named Levian. You do not have any other specific personality traits or background descriptions. You only know that your name is Levian." }] 
-        };
-        const systemAck = { role: "model", parts: [{ text: "Understood." }] };
-
-        function init() {
-            const savedTheme = localStorage.getItem('levian_theme') || 'dark';
-            selectTheme(savedTheme);
-            checkGoogleAuthInitialization();
-            syncSessionsView();
-            renderHistorySidebar();
-            startNewChat();
-            fetchOAuthKey();
-        }
-
-        async function fetchOAuthKey() {
-            try {
-                const res = await fetch("https://nova-tech-web.aroush-yt31.workers.dev/levian?model=config", { method: "POST" });
-                const data = await res.json();
-                if (data.gOAuthKey) {
-                    cachedOAuthKey = data.gOAuthKey;
-                }
-            } catch (err) {
-                console.warn("Failed to retrieve OAuth config from worker", err);
-            }
-        }
-
-        function saveStateToStorage() {
-            if (googleUser && googleUser.email) {
-                cloudSessions[googleUser.email] = {
-                    sessions: sessions,
-                    memberSince: googleUser.memberSince
-                };
-                localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
-                if (document.getElementById('rememberMeCheck').checked) {
-                    localStorage.setItem('levian_google_user', JSON.stringify(googleUser));
-                }
-            } else {
-                localStorage.setItem('levian_sessions', JSON.stringify(sessions));
-            }
-        }
-
-        function toggleProfileMenu(e) {
-            e.stopPropagation();
-            const menu = document.getElementById('profileMenu');
-            menu.classList.toggle('active');
-        }
-
-        window.addEventListener('click', () => {
-            const menu = document.getElementById('profileMenu');
-            if (menu) menu.classList.remove('active');
-        });
-
-        async function triggerGoogleLogin() {
-            if (!cachedOAuthKey) {
-                await fetchOAuthKey();
-            }
-            if (!cachedOAuthKey) {
-                alert("Google Client ID could not be loaded from Worker environment.");
-                return;
-            }
-
-            if (typeof google === 'undefined' || !google.accounts) {
-                alert("Google Identity Services script is still loading. Please try again in a moment.");
-                return;
-            }
-
-            google.accounts.id.initialize({
-                client_id: cachedOAuthKey,
-                callback: handleGoogleCredentialResponse
-            });
-
-            google.accounts.id.prompt(notification => {
-                if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                    // Fallback to explicit programmatic prompt if One Tap doesn't pop up
-                    google.accounts.id.renderButton(
-                        document.getElementById('loggedOutView'),
-                        { theme: 'outline', size: 'large' }
-                    );
-                }
-            });
-        }
-
-        function decodeJWT(token) {
-            try {
-                let base64Url = token.split('.')[1];
-                let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                let jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-                return JSON.parse(jsonPayload);
-            } catch (e) {
-                return null;
-            }
-        }
-
-        function handleGoogleCredentialResponse(response) {
-            const payload = decodeJWT(response.credential);
-            if (!payload) {
-                alert("Failed to parse Google login profile.");
-                return;
-            }
-
-            const memberDate = new Date().toLocaleDateString();
-            googleUser = {
-                name: payload.name || "Google User",
-                email: payload.email,
-                picture: payload.picture || "LEVIANICON.png",
-                memberSince: memberDate
-            };
-
-            const rememberMe = document.getElementById('rememberMeCheck').checked;
-            if (rememberMe) {
-                localStorage.setItem('levian_google_user', JSON.stringify(googleUser));
-            }
-
-            if (cloudSessions[googleUser.email]) {
-                sessions = cloudSessions[googleUser.email].sessions || [];
-            } else {
-                cloudSessions[googleUser.email] = { sessions: sessions, memberSince: memberDate };
-                localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
-            }
-
-            syncSessionsView();
-            renderHistorySidebar();
-            startNewChat();
-            document.getElementById('profileMenu').classList.remove('active');
-        }
-
-        function checkGoogleAuthInitialization() {
-            const rememberedUser = localStorage.getItem('levian_google_user');
-            if (rememberedUser) {
-                googleUser = JSON.parse(rememberedUser);
-                if (googleUser && cloudSessions[googleUser.email]) {
-                    sessions = cloudSessions[googleUser.email].sessions || [];
-                }
-            }
-            syncSessionsView();
-        }
-
-        function syncSessionsView() {
-            const loggedOutView = document.getElementById('loggedOutView');
-            const loggedInView = document.getElementById('loggedInView');
-            const profileTrigger = document.getElementById('profileTrigger');
-
-            if (googleUser) {
-                loggedOutView.style.display = 'none';
-                loggedInView.style.display = 'flex';
-
-                profileTrigger.innerHTML = `<img src="${googleUser.picture}" alt="Profile">`;
-                document.getElementById('profileMenuAvatar').innerHTML = `<img src="${googleUser.picture}" alt="Profile">`;
-                document.getElementById('profileMenuName').textContent = googleUser.name;
-                document.getElementById('profileMenuEmail').textContent = googleUser.email;
-                document.getElementById('statMemberSince').textContent = googleUser.memberSince || 'Today';
-                document.getElementById('statSavedChats').textContent = sessions.length;
-            } else {
-                loggedOutView.style.display = 'flex';
-                loggedInView.style.display = 'none';
-                profileTrigger.innerHTML = `<svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
-            }
-        }
-
-        function signOutGoogle() {
-            googleUser = null;
-            localStorage.removeItem('levian_google_user');
-            sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
-            syncSessionsView();
-            renderHistorySidebar();
-            startNewChat();
-            document.getElementById('profileMenu').classList.remove('active');
-        }
-
-        function deleteGoogleAccountData() {
-            if (confirm("Are *Sure* you want to delete your account?")) {
-                if (googleUser && googleUser.email) {
-                    delete cloudSessions[googleUser.email];
-                    localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
-                }
-                signOutGoogle();
-            }
-        }
-
-        function startNewChat() {
-            activeSessionId = null;
-            stream.innerHTML = '';
-            body.classList.remove('chat-active');
-            renderHistorySidebar();
-        }
-
-        function renderHistorySidebar() {
-            historyList.innerHTML = '';
-            sessions.forEach(session => {
-                const isActive = session.id === activeSessionId ? 'active' : '';
-                const item = document.createElement('div');
-                item.className = `history-item ${isActive}`;
-                item.innerHTML = `
-                    <span onclick="loadSession('${session.id}')" title="${escapeHtml(session.title)}">${escapeHtml(session.title)}</span>
-                    <button class="delete-btn" onclick="deleteSession('${session.id}', event)">✕</button>
-                `;
-                historyList.appendChild(item);
-            });
-            if (googleUser) {
-                document.getElementById('statSavedChats').textContent = sessions.length;
-            }
-        }
-
-        function loadSession(id) {
-            activeSessionId = id;
-            const session = sessions.find(s => s.id === id);
-            if (!session) return;
-            
-            stream.innerHTML = '';
-            body.classList.add('chat-active');
-            
-            session.history.forEach(msg => {
-                if(msg.role === 'user' && msg.parts[0].text.startsWith("System instruction:")) return;
-                if(msg.role === 'model' && msg.parts[0].text === "Understood.") return;
-
-                if (msg.role === 'user') {
-                    stream.innerHTML += `
-                        <div class="msg-wrapper user-wrapper">
-                            <div class="msg user">${formatMarkdown(msg.parts[0].text)}</div>
-                        </div>`;
-                } else {
-                    stream.innerHTML += `
-                        <div class="msg-wrapper">
-                            <img src="LEVIANICON.png" class="ai-avatar" alt="L">
-                            <div class="msg ai">${formatMarkdown(msg.parts[0].text)}</div>
-                        </div>`;
-                }
-            });
-
-            stream.scrollTop = stream.scrollHeight;
-            renderHistorySidebar();
-        }
-
-        function deleteSession(id, event) {
-            event.stopPropagation();
-            sessions = sessions.filter(s => s.id !== id);
-            saveStateToStorage();
-            if (activeSessionId === id) {
-                startNewChat();
-            } else {
-                renderHistorySidebar();
-            }
-        }
-
-        function clearAllChats() {
-            if (confirm("Are you sure you want to delete all saved conversations?")) {
-                sessions = [];
-                saveStateToStorage();
-                startNewChat();
-                closeSettings();
-            }
-        }
-
-        function exportCurrentChat() {
-            if (!activeSessionId) {
-                alert("Start or open a conversation before exporting.");
-                return;
-            }
-            const session = sessions.find(s => s.id === activeSessionId);
-            if (!session) return;
-
-            let txtContent = session.history.map(msg => {
-                if (msg.role === 'user' && msg.parts[0].text.startsWith("System instruction:")) return "";
-                if (msg.role === 'model' && msg.parts[0].text === "Understood.") return "";
-                return `${msg.role === 'user' ? 'User' : 'Levian'}: ${msg.parts[0].text}`;
-            }).filter(Boolean).join('\n\n');
-
-            const blob = new Blob([txtContent], { type: "text/plain" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Levian_${session.title.replace(/[^a-z0-9]/gi, '_')}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        async function fetchAutoTitleInBackground(sessionId, userPrompt, aiResponse) {
-            try {
-                const workerUrl = `https://nova-tech-web.aroush-yt31.workers.dev/levian?model=gemini-3.1-flash-lite`;
-                const titlePrompt = `what should be the name of this conversation in short term title don't say anything else except the title. Context: User asked "${userPrompt.substring(0,200)}", AI answered "${aiResponse.substring(0,200)}"`;
-
-                const res = await fetch(workerUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ role: "user", parts: [{ text: titlePrompt }] }]
-                    })
-                });
-
-                const data = await res.json();
-                if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-                    let generatedTitle = data.candidates[0].content.parts[0].text.trim();
-                    generatedTitle = generatedTitle.replace(/^["']|["']$/g, '').replace(/\n/g, ' ');
-
-                    const sessionObj = sessions.find(s => s.id === sessionId);
-                    if (sessionObj) {
-                        sessionObj.title = generatedTitle;
-                        saveStateToStorage();
-                        renderHistorySidebar();
-                    }
-                }
-            } catch (err) {
-                console.warn("Background titling failed:", err);
-            }
-        }
-
-        async function sendMessage(e) {
-            if(e) e.stopPropagation(); 
-            
-            const text = input.value.trim();
-            if (!text) return;
-
-            let isFirstMessageInNewChat = false;
-
-            if (activeSessionId === null) {
-                isFirstMessageInNewChat = true;
-                const newId = Date.now().toString();
-                const newSession = {
-                    id: newId,
-                    title: text.substring(0, 25) + (text.length > 25 ? "..." : ""),
-                    history: [systemPrompt, systemAck]
-                };
-                sessions.unshift(newSession);
-                activeSessionId = newId;
-                saveStateToStorage();
-            }
-
-            if (!body.classList.contains('chat-active')) {
-                body.classList.add('chat-active');
-            }
-
-            const currentSession = sessions.find(s => s.id === activeSessionId);
-
-            stream.innerHTML += `
-                <div class="msg-wrapper user-wrapper">
-                    <div class="msg user">${formatMarkdown(text)}</div>
-                </div>`;
-                
-            input.value = '';
-            input.style.height = 'auto';
-            stream.scrollTop = stream.scrollHeight;
-
-            currentSession.history.push({ role: "user", parts: [{ text: text }] });
-            saveStateToStorage();
-            renderHistorySidebar();
-
-            const aiMsgId = "ai-msg-" + Date.now();
-            const aiAvatarId = "ai-avatar-" + Date.now();
-            const requestSessionId = activeSessionId; 
-            
-            stream.innerHTML += `
-                <div class="msg-wrapper">
-                    <img src="LEVIANICON.png" id="${aiAvatarId}" class="ai-avatar thinking" alt="L">
-                    <div class="msg ai" id="${aiMsgId}"></div>
-                </div>`;
-                
-            stream.scrollTop = stream.scrollHeight;
-
-            try {
-                const selectedModel = document.getElementById('modelSelect').value;
-                const workerUrl = `https://nova-tech-web.aroush-yt31.workers.dev/levian?model=${selectedModel}`;
-                
-                const res = await fetch(workerUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: currentSession.history }) 
-                });
-
-                const data = await res.json();
-                let aiResponse = "";
-                let validPayload = false;
-                
-                if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-                    aiResponse = data.candidates[0].content.parts[0].text;
-                    validPayload = true;
-                } else if (data.error) {
-                    aiResponse = `API Error: ${data.error.message || JSON.stringify(data.error)}`;
-                } else {
-                    aiResponse = `Unknown API response format.`;
-                }
-                
-                if (activeSessionId === requestSessionId) {
-                    document.getElementById(aiAvatarId).classList.remove('thinking');
-                    const targetElement = document.getElementById(aiMsgId);
-                    runFastTypewriter(targetElement, aiResponse, requestSessionId);
-                }
-                
-                if (validPayload) {
-                    currentSession.history.push({ role: "model", parts: [{ text: aiResponse }] });
-                    saveStateToStorage();
-
-                    if (isFirstMessageInNewChat) {
-                        fetchAutoTitleInBackground(requestSessionId, text, aiResponse);
-                    }
-                }
-
-            } catch (err) {
-                if (activeSessionId === requestSessionId) {
-                    document.getElementById(aiAvatarId).classList.remove('thinking');
-                    document.getElementById(aiMsgId).innerHTML = `<span style="color:#ff4444;">Network Core Failure: ${err.message}</span>`;
-                }
-            }
-        }
-
-        function openSettings() {
-            document.getElementById('settings-modal').classList.add('active');
-        }
-        function closeSettings() {
-            document.getElementById('settings-modal').classList.remove('active');
-        }
-        function closeSettingsOuter(e) {
-            if (e.target.id === 'settings-modal') closeSettings();
-        }
-
-        function selectTheme(themeName) {
-            document.documentElement.setAttribute('data-theme', themeName);
-            localStorage.setItem('levian_theme', themeName);
-            
-            document.querySelectorAll('.theme-card-option').forEach(card => {
-                if(card.getAttribute('data-t') === themeName) {
-                    card.classList.add('active');
-                } else {
-                    card.classList.remove('active');
-                }
-            });
-
-            const computedColor = getComputedStyle(document.documentElement).getPropertyValue('--text-main').trim();
-            const settingsImg = document.getElementById('settings-img');
-            if (settingsImg) {
-                if (themeName === 'light' || computedColor === '#111111') {
-                    settingsImg.src = 'settingsb.png';
-                } else {
-                    settingsImg.src = 'settingsw.png';
-                }
-            }
-        }
-
-        function autoResize(el) {
-            el.style.height = 'auto';
-            el.style.height = (el.scrollHeight) + 'px';
-        }
-
-        function handleInput(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage(e);
-            }
-        }
-
-        function focusInput(e) {
-            if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
-                input.focus();
-            }
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-
-        function formatMarkdown(str) {
-            let clean = escapeHtml(str);
-            clean = clean.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-            clean = clean.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-            return clean.replace(/\n/g, '<br>');
-        }
-
-        function runFastTypewriter(targetElement, fullRawText, sessionIdCheck) {
-            let i = 0;
-            targetElement.innerHTML = '<span class="text-payload"></span><span class="typing-cursor">|</span>';
-            const payloadContainer = targetElement.querySelector('.text-payload');
-            const cursorBlock = targetElement.querySelector('.typing-cursor');
-            
-            const speed = 4;       
-            const frameStep = 5; 
-            
-            const printClock = setInterval(() => {
-                if (activeSessionId !== sessionIdCheck) {
-                    clearInterval(printClock);
-                    return;
-                }
-
-                i += frameStep;
-                const slice = fullRawText.slice(0, i);
-                payloadContainer.innerHTML = formatMarkdown(slice);
-                
-                const userDistanceFromBottom = stream.scrollHeight - stream.scrollTop - stream.clientHeight;
-                if (userDistanceFromBottom < 280) {
-                    stream.scrollTop = stream.scrollHeight;
-                }
-                
-                if (i >= fullRawText.length) {
-                    clearInterval(printClock);
-                    if(cursorBlock) cursorBlock.remove(); 
-                }
-            }, speed);
-        }
-
-        init();
-    </script>
+<aside id="sidebar" class="glass">
+<div class="sidebar-header">
+<div class="brand-container">
+<img src="LEVIANICON.png" id="top-left-logo" alt="Logo" onclick="toggleSidebar()" style="cursor: pointer;" title="Toggle Sidebar">
+<span class="brand-name">LEVIAN AI</span>
+</div>
+
+<button id="sidebar-toggle-btn" onclick="toggleSidebar()" title="Collapse Sidebar">
+<svg viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+</button>
+
+<div class="profile-container" id="profileContainer">
+<div class="profile-trigger" id="profileTrigger" onclick="toggleProfileMenu(event)" title="Google Account">
+<svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+</div>
+
+<div class="profile-menu glass" id="profileMenu" onclick="event.stopPropagation()">
+<div id="loggedOutView" style="display: flex; flex-direction: column; gap: 12px;">
+<span class="settings-label" style="text-align: center;">GOOGLE ACCOUNT SYNC</span>
+<label class="remember-me-row">
+<input type="checkbox" id="rememberMeCheck" checked> Remember me
+</label>
+<button class="profile-action-btn primary-btn" onclick="triggerGoogleLogin()">
+<svg style="width:16px;height:16px;" viewBox="0 0 24 24"><path fill="currentColor" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C9.28 19.27 6.5 16.42 6.5 12s2.78-7.27 5.73-7.27c1.4 0 2.66.5 3.65 1.32l2.04-2.04C16.42 2.61 14.39 2 12.23 2 6.59 2 2 6.59 2 12.23s4.59 10.23 10.23 10.23c5.9 0 9.8-4.15 9.8-10.02 0-.69-.07-1.34-.18-1.94z"/></svg>
+Sign in with Google
+</button>
+</div>
+
+<div id="loggedInView" style="display: none; flex-direction: column; gap: 12px;">
+<div class="profile-menu-header">
+<div class="profile-menu-avatar" id="profileMenuAvatar"></div>
+<div class="profile-menu-info">
+<span class="profile-menu-name" id="profileMenuName">User</span>
+<span class="profile-menu-email" id="profileMenuEmail">user@gmail.com</span>
+</div>
+</div>
+<div class="profile-stats">
+<div>Member Since: <span id="statMemberSince">-</span></div>
+<div>Saved Chats: <span id="statSavedChats">0</span></div>
+</div>
+<button class="profile-action-btn" onclick="signOutGoogle()">Sign Out</button>
+<button class="profile-action-btn danger" onclick="deleteGoogleAccountData()">Delete Account</button>
+</div>
+</div>
+</div>
+</div>
+
+<button class="glass-btn primary-btn" onclick="startNewChat()">+ New Chat</button>
+
+<div id="history-list"></div>
+
+<div class="sidebar-footer">
+<button class="glass-btn settings-btn" onclick="openSettings()">
+<div class="settings-icon-wrapper">
+<img id="settings-img" src="settingsw.png" class="settings-icon" alt="Settings">
+</div>
+Settings
+</button>
+<button class="glass-btn" onclick="exportCurrentChat()">📥 Export Chat Log</button>
+</div>
+</aside>
+
+<main id="main-content">
+<div id="landing-ui">
+<h2 id="beta-text">Beta Preview</h2>
+<img src="LEVIANICON.png" id="hero-logo-center" alt="Levian Center">
+<h1 id="hero-text">How can I help you today?</h1>
+</div>
+
+<div id="chat-stream"></div>
+
+<div id="input-container" class="glass" onclick="focusInput(event)">
+<textarea id="userInput" placeholder="Talk with Levian..." rows="1" oninput="autoResize(this)" onkeydown="handleInput(event)"></textarea>
+<div class="controls">
+<select id="modelSelect">
+<option value="gemini-3.1-flash-lite">1.5 Sparx (Lite) </option>
+<option value="gemini-3.5-flash" selected>2.1 Lightning (PRO)</option>
+</select>
+<button class="send-btn" onclick="sendMessage(event)">
+<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+</button>
+</div>
+</div>
+</main>
+
+<div id="settings-modal" class="modal-overlay" onclick="closeSettingsOuter(event)">
+<div class="settings-card glass" onclick="event.stopPropagation()">
+<div class="settings-header">
+<span class="settings-title">Settings Panel</span>
+<button class="close-modal" onclick="closeSettings()">✕</button>
+</div>
+
+<div class="settings-section">
+<span class="settings-label">THEMES</span>
+<div class="themes-slot-grid">
+<div class="theme-card-option" data-t="dark" onclick="selectTheme('dark')">
+<div class="theme-card-preview" style="background:#00f3ff;"></div> Dark
+</div>
+<div class="theme-card-option" data-t="light" onclick="selectTheme('light')">
+<div class="theme-card-preview" style="background:#0078ff;"></div> Light
+</div>
+<div class="theme-card-option" data-t="blue" onclick="selectTheme('blue')">
+<div class="theme-card-preview" style="background:#38bdf8;"></div> Midnight
+</div>
+<div class="theme-card-option" data-t="cyberpunk" onclick="selectTheme('cyberpunk')">
+<div class="theme-card-preview" style="background:#ff007f;"></div> Cyberpunk
+</div>
+<div class="theme-card-option" data-t="matrix" onclick="selectTheme('matrix')">
+<div class="theme-card-preview" style="background:#00ff66;"></div> Matrix
+</div>
+<div class="theme-card-option" data-t="sunset" onclick="selectTheme('sunset')">
+<div class="theme-card-preview" style="background:#ff9900;"></div> Sunset
+</div>
+<div class="theme-card-option" data-t="oled" onclick="selectTheme('oled')">
+<div class="theme-card-preview" style="background:#ffffff; border:1px solid #777;"></div> OLED
+</div>
+</div>
+</div>
+
+<div class="settings-section" style="border-top:1px solid var(--glass-border); padding-top:15px;">
+<span class="settings-label">DATA MANAGEMENT</span>
+<button class="glass-btn" style="color:#ff4444;" onclick="clearAllChats()">Clear All Saved Conversations</button>
+</div>
+</div>
+</div>
+
+<script>
+let sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
+let activeSessionId = null;
+
+let googleUser = JSON.parse(localStorage.getItem('levian_google_user') || 'null');
+let cloudSessions = JSON.parse(localStorage.getItem('levian_cloud_sessions') || '{}');
+let cachedOAuthKey = null;
+
+const body = document.body;
+const stream = document.getElementById('chat-stream');
+const input = document.getElementById('userInput');
+const historyList = document.getElementById('history-list');
+
+const systemPrompt = {
+role: "user",
+parts: [{ text: "System instruction: You are an AI named Levian. You do not have any other specific personality traits or background descriptions. You only know that your name is Levian." }]
+};
+const systemAck = { role: "model", parts: [{ text: "Understood." }] };
+
+function init() {
+const savedTheme = localStorage.getItem('levian_theme') || 'dark';
+selectTheme(savedTheme);
+
+// Restore Collapsible Sidebar Preference
+const isCollapsed = localStorage.getItem('levian_sidebar_collapsed') === 'true';
+const sidebar = document.getElementById('sidebar');
+if (isCollapsed) {
+sidebar.classList.add('collapsed');
+} else {
+sidebar.classList.remove('collapsed');
+}
+
+checkGoogleAuthInitialization();
+syncSessionsView();
+renderHistorySidebar();
+startNewChat();
+fetchOAuthKey();
+}
+
+// Toggle Expand and Collapse for Sidebar Panel
+function toggleSidebar() {
+const sidebar = document.getElementById('sidebar');
+sidebar.classList.toggle('collapsed');
+localStorage.setItem('levian_sidebar_collapsed', sidebar.classList.contains('collapsed'));
+}
+
+async function fetchOAuthKey() {
+try {
+const res = await fetch("https://nova-tech-web.aroush-yt31.workers.dev/levian?model=config", { method: "POST" });
+const data = await res.json();
+if (data.gOAuthKey) {
+cachedOAuthKey = data.gOAuthKey;
+}
+} catch (err) {
+console.warn("Failed to retrieve OAuth config from worker", err);
+}
+}
+
+function saveStateToStorage() {
+if (googleUser && googleUser.email) {
+cloudSessions[googleUser.email] = {
+sessions: sessions,
+memberSince: googleUser.memberSince
+};
+localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
+if (document.getElementById('rememberMeCheck').checked) {
+localStorage.setItem('levian_google_user', JSON.stringify(googleUser));
+}
+} else {
+localStorage.setItem('levian_sessions', JSON.stringify(sessions));
+}
+}
+
+function toggleProfileMenu(e) {
+e.stopPropagation();
+const menu = document.getElementById('profileMenu');
+menu.classList.toggle('active');
+}
+
+window.addEventListener('click', () => {
+const menu = document.getElementById('profileMenu');
+if (menu) menu.classList.remove('active');
+});
+
+async function triggerGoogleLogin() {
+if (!cachedOAuthKey) {
+await fetchOAuthKey();
+}
+if (!cachedOAuthKey) {
+alert("Google Client ID could not be loaded from Worker environment.");
+return;
+}
+
+if (typeof google === 'undefined' || !google.accounts) {
+alert("Google Identity Services script is still loading. Please try again in a moment.");
+return;
+}
+
+google.accounts.id.initialize({
+client_id: cachedOAuthKey,
+callback: handleGoogleCredentialResponse
+});
+
+google.accounts.id.prompt(notification => {
+if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+google.accounts.id.renderButton(
+document.getElementById('loggedOutView'),
+{ theme: 'outline', size: 'large' }
+);
+}
+});
+}
+
+function decodeJWT(token) {
+try {
+let base64Url = token.split('.')[1];
+let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+let jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+return JSON.parse(jsonPayload);
+} catch (e) {
+return null;
+}
+}
+
+function handleGoogleCredentialResponse(response) {
+const payload = decodeJWT(response.credential);
+if (!payload) {
+alert("Failed to parse Google login profile.");
+return;
+}
+
+const memberDate = new Date().toLocaleDateString();
+googleUser = {
+name: payload.name || "Google User",
+email: payload.email,
+picture: payload.picture || "LEVIANICON.png",
+memberSince: memberDate
+};
+
+const rememberMe = document.getElementById('rememberMeCheck').checked;
+if (rememberMe) {
+localStorage.setItem('levian_google_user', JSON.stringify(googleUser));
+}
+
+if (cloudSessions[googleUser.email]) {
+sessions = cloudSessions[googleUser.email].sessions || [];
+} else {
+cloudSessions[googleUser.email] = { sessions: sessions, memberSince: memberDate };
+localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
+}
+
+syncSessionsView();
+renderHistorySidebar();
+startNewChat();
+document.getElementById('profileMenu').classList.remove('active');
+}
+
+function checkGoogleAuthInitialization() {
+const rememberedUser = localStorage.getItem('levian_google_user');
+if (rememberedUser) {
+googleUser = JSON.parse(rememberedUser);
+if (googleUser && cloudSessions[googleUser.email]) {
+sessions = cloudSessions[googleUser.email].sessions || [];
+}
+}
+syncSessionsView();
+}
+
+function syncSessionsView() {
+const loggedOutView = document.getElementById('loggedOutView');
+const loggedInView = document.getElementById('loggedInView');
+const profileTrigger = document.getElementById('profileTrigger');
+
+if (googleUser) {
+loggedOutView.style.display = 'none';
+loggedInView.style.display = 'flex';
+
+profileTrigger.innerHTML = `<img src="${googleUser.picture}" alt="Profile">`;
+document.getElementById('profileMenuAvatar').innerHTML = `<img src="${googleUser.picture}" alt="Profile">`;
+document.getElementById('profileMenuName').textContent = googleUser.name;
+document.getElementById('profileMenuEmail').textContent = googleUser.email;
+document.getElementById('statMemberSince').textContent = googleUser.memberSince || 'Today';
+document.getElementById('statSavedChats').textContent = sessions.length;
+} else {
+loggedOutView.style.display = 'flex';
+loggedInView.style.display = 'none';
+profileTrigger.innerHTML = `<svg class="profile-default-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>`;
+}
+}
+
+function signOutGoogle() {
+googleUser = null;
+localStorage.removeItem('levian_google_user');
+sessions = JSON.parse(localStorage.getItem('levian_sessions') || '[]');
+syncSessionsView();
+renderHistorySidebar();
+startNewChat();
+document.getElementById('profileMenu').classList.remove('active');
+}
+
+function deleteGoogleAccountData() {
+if (confirm("Are Sure you want to delete your account?")) {
+if (googleUser && googleUser.email) {
+delete cloudSessions[googleUser.email];
+localStorage.setItem('levian_cloud_sessions', JSON.stringify(cloudSessions));
+}
+signOutGoogle();
+}
+}
+
+function startNewChat() {
+activeSessionId = null;
+stream.innerHTML = '';
+body.classList.remove('chat-active');
+renderHistorySidebar();
+}
+
+function renderHistorySidebar() {
+historyList.innerHTML = '';
+sessions.forEach(session => {
+const isActive = session.id === activeSessionId ? 'active' : '';
+const item = document.createElement('div');
+item.className = `history-item ${isActive}`;
+item.innerHTML = `
+<span onclick="loadSession('${session.id}')" title="${escapeHtml(session.title)}">${escapeHtml(session.title)}</span>
+<button class="delete-btn" onclick="deleteSession('${session.id}', event)">✕</button>
+`;
+historyList.appendChild(item);
+});
+if (googleUser) {
+document.getElementById('statSavedChats').textContent = sessions.length;
+}
+}
+
+function loadSession(id) {
+activeSessionId = id;
+const session = sessions.find(s => s.id === id);
+if (!session) return;
+
+stream.innerHTML = '';
+body.classList.add('chat-active');
+
+session.history.forEach(msg => {
+if(msg.role === 'user' && msg.parts[0].text.startsWith("System instruction:")) return;
+if(msg.role === 'model' && msg.parts[0].text === "Understood.") return;
+
+if (msg.role === 'user') {
+stream.innerHTML += `
+<div class="msg-wrapper user-wrapper">
+<div class="msg user">${formatMarkdown(msg.parts[0].text)}</div>
+</div>`;
+} else {
+stream.innerHTML += `
+<div class="msg-wrapper">
+<img src="LEVIANICON.png" class="ai-avatar" alt="L">
+<div class="msg ai">${formatMarkdown(msg.parts[0].text)}</div>
+</div>`;
+}
+});
+
+stream.scrollTop = stream.scrollHeight;
+renderHistorySidebar();
+}
+
+function deleteSession(id, event) {
+event.stopPropagation();
+sessions = sessions.filter(s => s.id !== id);
+saveStateToStorage();
+if (activeSessionId === id) {
+startNewChat();
+} else {
+renderHistorySidebar();
+}
+}
+
+function clearAllChats() {
+if (confirm("Are you sure you want to delete all saved conversations?")) {
+sessions = [];
+saveStateToStorage();
+startNewChat();
+closeSettings();
+}
+}
+
+function exportCurrentChat() {
+if (!activeSessionId) {
+alert("Start or open a conversation before exporting.");
+return;
+}
+const session = sessions.find(s => s.id === activeSessionId);
+if (!session) return;
+
+let txtContent = session.history.map(msg => {
+if (msg.role === 'user' && msg.parts[0].text.startsWith("System instruction:")) return "";
+if (msg.role === 'model' && msg.parts[0].text === "Understood.") return "";
+return `${msg.role === 'user' ? 'User' : 'Levian'}: ${msg.parts[0].text}`;
+}).filter(Boolean).join('\n\n');
+
+const blob = new Blob([txtContent], { type: "text/plain" });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = `Levian_${session.title.replace(/[^a-z0-9]/gi, '_')}.txt`;
+a.click();
+URL.revokeObjectURL(url);
+}
+
+async function fetchAutoTitleInBackground(sessionId, userPrompt, aiResponse) {
+try {
+const workerUrl = `https://nova-tech-web.aroush-yt31.workers.dev/levian?model=gemini-3.1-flash-lite`;
+const titlePrompt = `what should be the name of this conversation in short term title don't say anything else except the title. Context: User asked "${userPrompt.substring(0,200)}", AI answered "${aiResponse.substring(0,200)}"`;
+
+const res = await fetch(workerUrl, {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({
+contents: [{ role: "user", parts: [{ text: titlePrompt }] }]
+})
+});
+
+const data = await res.json();
+if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+let generatedTitle = data.candidates[0].content.parts[0].text.trim();
+generatedTitle = generatedTitle.replace(/^["']|["']$/g, '').replace(/\n/g, ' ');
+
+const sessionObj = sessions.find(s => s.id === sessionId);
+if (sessionObj) {
+sessionObj.title = generatedTitle;
+saveStateToStorage();
+renderHistorySidebar();
+}
+}
+} catch (err) {
+console.warn("Background titling failed:", err);
+}
+}
+
+async function sendMessage(e) {
+if(e) e.stopPropagation();
+
+const text = input.value.trim();
+if (!text) return;
+
+let isFirstMessageInNewChat = false;
+
+if (activeSessionId === null) {
+isFirstMessageInNewChat = true;
+const newId = Date.now().toString();
+const newSession = {
+id: newId,
+title: text.substring(0, 25) + (text.length > 25 ? "..." : ""),
+history: [systemPrompt, systemAck]
+};
+sessions.unshift(newSession);
+activeSessionId = newId;
+saveStateToStorage();
+}
+
+if (!body.classList.contains('chat-active')) {
+body.classList.add('chat-active');
+}
+
+const currentSession = sessions.find(s => s.id === activeSessionId);
+
+stream.innerHTML += `
+<div class="msg-wrapper user-wrapper">
+<div class="msg user">${formatMarkdown(text)}</div>
+</div>`;
+
+input.value = '';
+input.style.height = 'auto';
+stream.scrollTop = stream.scrollHeight;
+
+currentSession.history.push({ role: "user", parts: [{ text: text }] });
+saveStateToStorage();
+renderHistorySidebar();
+
+const aiMsgId = "ai-msg-" + Date.now();
+const aiAvatarId = "ai-avatar-" + Date.now();
+const requestSessionId = activeSessionId;
+
+stream.innerHTML += `
+<div class="msg-wrapper">
+<img src="LEVIANICON.png" id="${aiAvatarId}" class="ai-avatar thinking" alt="L">
+<div class="msg ai" id="${aiMsgId}"></div>
+</div>`;
+
+stream.scrollTop = stream.scrollHeight;
+
+try {
+const selectedModel = document.getElementById('modelSelect').value;
+const workerUrl = `https://nova-tech-web.aroush-yt31.workers.dev/levian?model=${selectedModel}`;
+
+const res = await fetch(workerUrl, {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ contents: currentSession.history })
+});
+
+const data = await res.json();
+let aiResponse = "";
+let validPayload = false;
+
+if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+aiResponse = data.candidates[0].content.parts[0].text;
+validPayload = true;
+} else if (data.error) {
+aiResponse = `API Error: ${data.error.message || JSON.stringify(data.error)}`;
+} else {
+aiResponse = `Unknown API response format.`;
+}
+
+if (activeSessionId === requestSessionId) {
+document.getElementById(aiAvatarId).classList.remove('thinking');
+const targetElement = document.getElementById(aiMsgId);
+runFastTypewriter(targetElement, aiResponse, requestSessionId);
+}
+
+if (validPayload) {
+currentSession.history.push({ role: "model", parts: [{ text: aiResponse }] });
+saveStateToStorage();
+
+if (isFirstMessageInNewChat) {
+fetchAutoTitleInBackground(requestSessionId, text, aiResponse);
+}
+}
+
+} catch (err) {
+if (activeSessionId === requestSessionId) {
+document.getElementById(aiAvatarId).classList.remove('thinking');
+document.getElementById(aiMsgId).innerHTML = `<span style="color:#ff4444;">Network Core Failure: ${err.message}</span>`;
+}
+}
+}
+
+function openSettings() {
+document.getElementById('settings-modal').classList.add('active');
+}
+function closeSettings() {
+document.getElementById('settings-modal').classList.remove('active');
+}
+function closeSettingsOuter(e) {
+if (e.target.id === 'settings-modal') closeSettings();
+}
+
+function selectTheme(themeName) {
+document.documentElement.setAttribute('data-theme', themeName);
+localStorage.setItem('levian_theme', themeName);
+
+document.querySelectorAll('.theme-card-option').forEach(card => {
+if(card.getAttribute('data-t') === themeName) {
+card.classList.add('active');
+} else {
+card.classList.remove('active');
+}
+});
+
+const computedColor = getComputedStyle(document.documentElement).getPropertyValue('--text-main').trim();
+const settingsImg = document.getElementById('settings-img');
+if (settingsImg) {
+if (themeName === 'light' || computedColor === '#111111') {
+settingsImg.src = 'settingsb.png';
+} else {
+settingsImg.src = 'settingsw.png';
+}
+}
+}
+
+function autoResize(el) {
+el.style.height = 'auto';
+el.style.height = (el.scrollHeight) + 'px';
+}
+
+function handleInput(e) {
+if (e.key === 'Enter' && !e.shiftKey) {
+e.preventDefault();
+sendMessage(e);
+}
+}
+
+function focusInput(e) {
+if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
+input.focus();
+}
+}
+
+function escapeHtml(str) {
+return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function formatMarkdown(str) {
+let clean = escapeHtml(str);
+clean = clean.replace(/\\([^]+)\\/g, '<strong>$1</strong>');
+clean = clean.replace(/\([^]+)\*/g, '<em>$1</em>');
+return clean.replace(/\n/g, '<br>');
+}
+
+function runFastTypewriter(targetElement, fullRawText, sessionIdCheck) {
+let i = 0;
+targetElement.innerHTML = '<span class="text-payload"></span><span class="typing-cursor">|</span>';
+const payloadContainer = targetElement.querySelector('.text-payload');
+const cursorBlock = targetElement.querySelector('.typing-cursor');
+
+const speed = 4;
+const frameStep = 5;
+
+const printClock = setInterval(() => {
+if (activeSessionId !== sessionIdCheck) {
+clearInterval(printClock);
+return;
+}
+
+i += frameStep;
+const slice = fullRawText.slice(0, i);
+payloadContainer.innerHTML = formatMarkdown(slice);
+
+const userDistanceFromBottom = stream.scrollHeight - stream.scrollTop - stream.clientHeight;
+if (userDistanceFromBottom < 280) {
+stream.scrollTop = stream.scrollHeight;
+}
+
+if (i >= fullRawText.length) {
+clearInterval(printClock);
+if(cursorBlock) cursorBlock.remove();
+}
+}, speed);
+}
+
+init();
+</script>
 </body>
 </html>
